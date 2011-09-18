@@ -1,0 +1,116 @@
+UNISON 2.32.52 started propagating changes at 01:24:14 on 17 Sep 2011
+[BGN] Copying .keepassx from /home/mirko to /mnt/fud
+[END] Copying .keepassx
+UNISON 2.32.52 finished propagating changes at 01:24:31 on 17 Sep 2011
+Synchronization complete at 01:24:31  (1 item transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 01:47:45 on 17 Sep 2011
+[BGN] Copying Fud from /home/mirko to /mnt/fud
+[END] Copying Fud
+UNISON 2.32.52 finished propagating changes at 01:47:48 on 17 Sep 2011
+Synchronization complete at 01:47:48  (1 item transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 01:49:56 on 17 Sep 2011
+[BGN] Copying .keepassx from /mnt/fud to /home/mirko/Fud
+[END] Copying .keepassx
+[BGN] Copying Fud from /mnt/fud to /home/mirko/Fud
+[END] Copying Fud
+UNISON 2.32.52 finished propagating changes at 01:49:57 on 17 Sep 2011
+Synchronization complete at 01:49:57  (2 items transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 01:52:09 on 17 Sep 2011
+[BGN] Deleting Fud from /home/mirko/Fud
+[END] Deleting Fud
+UNISON 2.32.52 finished propagating changes at 01:52:09 on 17 Sep 2011
+Synchronization complete at 01:52:09  (1 item transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 01:56:05 on 17 Sep 2011
+[BGN] Copying sdf from /home/mirko/Fud to /mnt/fud
+[END] Copying sdf
+UNISON 2.32.52 finished propagating changes at 01:56:23 on 17 Sep 2011
+Synchronization complete at 01:56:23  (1 item transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 01:59:19 on 17 Sep 2011
+[BGN] Copying jgf from /mnt/fud to /home/mirko/Fud
+[END] Copying jgf
+UNISON 2.32.52 finished propagating changes at 01:59:19 on 17 Sep 2011
+Synchronization complete at 01:59:19  (1 item transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 02:02:18 on 17 Sep 2011
+[ERROR] Skipping sdf
+  Error in digesting /mnt/fud/sdf:
+/mnt/fud/sdf: Permission denied
+[BGN] Deleting jgf from /home/mirko/Fud
+[END] Deleting jgf
+UNISON 2.32.52 finished propagating changes at 02:02:18 on 17 Sep 2011
+Synchronization complete at 02:02:18  (1 item transferred, 1 skipped, 0 failed)
+  skipped: sdf
+UNISON 2.32.52 started propagating changes at 02:04:16 on 17 Sep 2011
+[BGN] Copying aaaaaaaaa from /mnt/fud to /home/mirko/Fud
+[END] Copying aaaaaaaaa
+UNISON 2.32.52 finished propagating changes at 02:04:16 on 17 Sep 2011
+Synchronization complete at 02:04:16  (1 item transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 02:11:58 on 17 Sep 2011
+[BGN] Copying lkj from /mnt/fud to /home/mirko/Fud
+[END] Copying lkj
+[BGN] Deleting aaaaaaaaa from /home/mirko/Fud
+[END] Deleting aaaaaaaaa
+UNISON 2.32.52 finished propagating changes at 02:11:58 on 17 Sep 2011
+Synchronization complete at 02:11:58  (2 items transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 02:15:20 on 17 Sep 2011
+[ERROR] Skipping nuovo file
+  Error in digesting /home/mirko/Fud/nuovo file:
+/home/mirko/Fud/nuovo file: No such file or directory
+[BGN] Copying abla from /mnt/fud to /home/mirko/Fud
+[END] Copying abla
+UNISON 2.32.52 finished propagating changes at 02:15:20 on 17 Sep 2011
+Synchronization complete at 02:15:20  (1 item transferred, 1 skipped, 0 failed)
+  skipped: nuovo file
+UNISON 2.32.52 started propagating changes at 02:15:54 on 17 Sep 2011
+[BGN] Copying dfg from /home/mirko/Fud to /mnt/fud
+[END] Copying dfg
+[BGN] Copying nuovo file from /home/mirko/Fud to /mnt/fud
+Failed: Error in copying locally:
+/home/mirko/Fud/nuovo file: No such file or directory
+UNISON 2.32.52 finished propagating changes at 02:16:08 on 17 Sep 2011
+Synchronization incomplete at 02:16:08  (1 item transferred, 0 skipped, 1 failed)
+  failed: nuovo file
+UNISON 2.32.52 started propagating changes at 02:17:54 on 17 Sep 2011
+[BGN] Copying cartella senza nome from /home/mirko/Fud to /mnt/fud
+[END] Copying cartella senza nome
+[BGN] Copying ggh from /home/mirko/Fud to /mnt/fud
+[END] Copying ggh
+UNISON 2.32.52 finished propagating changes at 02:18:09 on 17 Sep 2011
+Synchronization complete at 02:18:09  (2 items transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 02:20:03 on 17 Sep 2011
+[BGN] Copying k from /home/mirko/Fud to /mnt/fud
+[END] Copying k
+[BGN] Deleting cartella senza nome from /mnt/fud
+[END] Deleting cartella senza nome
+UNISON 2.32.52 finished propagating changes at 02:20:08 on 17 Sep 2011
+Synchronization complete at 02:20:08  (2 items transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 02:20:25 on 17 Sep 2011
+[BGN] Deleting lkj from /home/mirko/Fud
+[END] Deleting lkj
+UNISON 2.32.52 finished propagating changes at 02:20:25 on 17 Sep 2011
+Synchronization complete at 02:20:25  (1 item transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 02:21:34 on 17 Sep 2011
+[BGN] Deleting ggh from /mnt/fud
+[END] Deleting ggh
+UNISON 2.32.52 finished propagating changes at 02:21:39 on 17 Sep 2011
+Synchronization complete at 02:21:39  (1 item transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 02:24:30 on 17 Sep 2011
+[BGN] Deleting abla from /home/mirko/Fud
+[END] Deleting abla
+[BGN] Deleting sdf from /home/mirko/Fud
+[END] Deleting sdf
+UNISON 2.32.52 finished propagating changes at 02:24:30 on 17 Sep 2011
+Synchronization complete at 02:24:30  (2 items transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 02:25:26 on 17 Sep 2011
+[BGN] Deleting .keepassx from /home/mirko/Fud
+[END] Deleting .keepassx
+[BGN] Deleting dfg from /home/mirko/Fud
+[END] Deleting dfg
+[BGN] Deleting k from /home/mirko/Fud
+[END] Deleting k
+UNISON 2.32.52 finished propagating changes at 02:25:26 on 17 Sep 2011
+Synchronization complete at 02:25:26  (3 items transferred, 0 skipped, 0 failed)
+UNISON 2.32.52 started propagating changes at 02:27:49 on 17 Sep 2011
+[BGN] Copying jhg from /mnt/fud to /home/mirko/Fud
+[END] Copying jhg
+UNISON 2.32.52 finished propagating changes at 02:27:49 on 17 Sep 2011
+Synchronization complete at 02:27:49  (1 item transferred, 0 skipped, 0 failed)

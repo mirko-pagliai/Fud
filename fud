@@ -1,0 +1,104 @@
+#!/bin/bash
+
+CONFIGFILE="fud.conf"
+LOGFILE="fud.log"
+
+#Colors
+RED="\e[1;31m" #Red
+GREEN="\e[1;32m" #Green
+YELLOW="\e[1;33m" #Yellow
+RESET="\e[0m" #Reset!
+
+# NOTA DA RIMUOVERE: questa è una semplice funzione di stampa. Per ora non fa nulla di particolarmente straordinario, ma potrebbe essere utilizzata più in là per sopprimere agevolmente l'output nel terminale, se passata un'opzione come -silent
+# Print on screen
+printScreen() { echo -e $1; }	 
+
+# Test if software installation and server connection are ok
+testStuff () {
+	# Check if mount point is avaible
+	if [[ ! -e /mnt/fud ]]; then
+		printScreen $RED"Error: "$RESET"mount point /mnt/fud is not available. Type \`mkdir -p /mnt/fud\` as root first, then restart this script";
+		exit 1
+	fi
+
+	# Check if inotify is installed
+	if ! which inotifywait &> /dev/null; then
+		printScreen $RED"Error: "$RESET"install inotify-tools first, then restart this script"
+		exit 1
+	fi
+
+	# Check if unison is installed
+	if ! which unison &> /dev/null; then
+		printScreen $RED"Error: "$RESET"install unison first, then restart this script";
+		exit 1
+	fi
+
+	# Check if you are in the fuse group
+	if ! groups | grep "fuse" &> /dev/null; then
+		printScreen $RED"Error: "$RESET"your user is not in the fuse group. Type \`newgrp fuse\` first, then restart this script";
+		exit 1
+	fi	
+
+	#Check for ssh connection
+	if [ "$METHOD" == "ssh" ]; then
+		# Check if sshfs is installed
+		if ! which sshfs &> /dev/null; then
+			printScreen $RED"Error: "$RESET"install sshfs first, then restart this script";
+			exit 1
+		fi
+		# Try to mount the remote directory with sshfs and verify 
+		if ! sshfs $USER@$SERVER:$RPATH /mnt/fud -p $PORT -C &> /dev/null; then
+			printScreen $RED"Error: "$RESET"impossible to login to ssh server. Check your server configuration first, then restart the script"
+			exit 1
+		fi
+	# Check for ftp connection
+	elif [ "$METHOD" == "ftp" ]; then
+		# Check if curlftpfs is installed
+		if ! which curlftpfs &> /dev/null; then
+			printScreen $RED"Error: "$RESET"install curlftpfs first, then restart this script";
+			exit 1
+		fi
+		# Try to mount the remote directory with curlftpfs and verify
+		if ! curlftpfs $SERVER:$PORT/$RPATH /mnt/fud -o user=$USER:$PWD -o allow_other -o nonempty &> /dev/null; then
+			printScreen $RED"Error: "$RESET"impossible to login to ftp server. Check your server configuration first, then restart the script"
+			exit 1
+		fi
+	fi
+}
+
+# Start 
+syncDir() {
+	OUTPUT=$(unison $LPATH /mnt/fud -logfile $LOGFILE $boptions -batch -auto -terse -confirmbigdel="false" 2>&1)
+	SYNCFILES=$(echo `expr match "$OUTPUT" '.*\(([0-9]* item[s]* transferred\)'` | sed -n "s/(//g;s/item[s]* transferred//g;/[0-9]*/p")
+	
+	if [[ "$SYNCFILES" -ge "1" ]]; then
+		if [[ "$SYNCFILES" -eq "1" ]]; then
+			MESSAGE="$SYNCFILES file have been synchronized"
+		elif [[ "$SYNCFILES" -gt "1" ]]; then
+			MESSAGE="$SYNCFILES files have been synchronized"
+		fi
+
+		notify-send --icon=/usr/share/app-install/icons/fud.png "$MESSAGE"
+	fi
+}
+
+# SCRIPT STARTS HERE
+# Check if config file exists
+if [[ -e $CONFIGFILE ]]; then
+	# Include config file
+	source $CONFIGFILE
+	# Perform test
+	testStuff
+	# Finally, sync dirs
+	syncDir
+	while inotifywait -r -e modify -e create -e move -e delete -e open $LPATH /mnt/fud/ &> /dev/null; do
+		echo "Sync... wait."
+		sleep 10
+		syncDir
+	done
+	exit 0
+# If config file doesn't exists
+else
+	printScreen $RED"Error: "$RESET"create and set "$FILELIST" first, then restart the script";	
+	exit 1
+fi
