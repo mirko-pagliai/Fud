@@ -1,0 +1,23 @@
+# Metodo di connessione
+# NOTA DA RIMUOVERE: per ora è e sarà disponibile soltanto ssh. Ma questa variabile verrà comunque utilizzata per le verifiche del caso, semmai successivamente si volesse andare oltre ssh...
+METHOD="ftp"
+# Server per la connessione
+SERVER="ftp.yourhost.com"
+# Utente per la connessione ssh
+# NOTA DA RIMUOVERE: qui (o da qualche altra parte) andrebbe spiegato che prima di lanciare lo script, bisognerebbe sincerarsi che l'utente impostato abbia i permessi per lavorare sulla directory remota (successivamente indicata come RPATH) o comunque integrare nello script un controllo dei permessi sulla stessa
+USER="username"
+# Password per la connessione ssh
+# NOTA DA RIMUOVERE: qui (o da qualche altra parte) andrebbe correttamente spiegato che questa variabile può essere utilizzata per comodità, ma è che caldamente sconsigliata. Al contrario, sarebbe meglio lasciarla vuota e digitare manualmente la password o (ancora meglio) impostare l'autenticazione tramite chiave
+PWD="password"
+# Porta per la connessione ssh
+PORT="21"
+# Directory 
+LPATH="/home/username"
+RPATH="/backup"
+# Opzioni per la sincronizzazione di unison
+# -auto		automatically accept default (nonconflicting) actions
+# -group	synchronize group attributes
+# -owner	synchronize owner
+# -retry n	re-try failed synchronizations N times (text ui only)
+# -times	synchronize modification times
+BOPTIONS=""

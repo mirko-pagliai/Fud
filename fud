@@ -68,7 +68,7 @@ testStuff () {
 
 # Start 
 syncDir() {
-	OUTPUT=$(unison $LPATH /mnt/fud -logfile $LOGFILE $boptions -batch -auto -terse -confirmbigdel="false" 2>&1)
+	OUTPUT=$(unison $LPATH /mnt/fud -logfile $LOGFILE $EXTRAOPTIONS -batch -auto -terse -confirmbigdel="false" -retry 3 -times 2>&1)
 	SYNCFILES=$(echo `expr match "$OUTPUT" '.*\(([0-9]* item[s]* transferred\)'` | sed -n "s/(//g;s/item[s]* transferred//g;/[0-9]*/p")
 	
 	if [[ "$SYNCFILES" -ge "1" ]]; then

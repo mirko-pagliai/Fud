@@ -1,34 +1,192 @@
 #!/bin/bash
 
 FUDDIR="$HOME/.fud"
+FUDCONF="$FUDDIR/fud.conf"
+
+METHODS[1]="ssh"
+METHODS[2]="ftp"
+
+#Colors
+RED="\e[1;31m" #Red
+GREEN="\e[1;32m" #Green
+RESET="\e[0m" #Reset!
 
 # Print on screen
 printScreen() { echo -e "$@"; }
 
-printScreen "Questo script configurerà fud tramite domande interattive."
-printScreen -n "Procedere? (Y/n): "
-read sure
-if [[ $sure = "Y" || $sure = "y" ]]; then
-	# Crea la cartella di Fud
-	mkdir -p $FUDDIR
-	printScreen "Creata la cartella $FUDDIR"
-	# Crea il file di configurazione e il file di log
-	touch $FUDDIR/fud.conf
-	printScreen "Creato il file $FUDDIR/fud.conf"
-	touch $FUDDIR/fud.log
-	printScreen "Creato il file $FUDDIR/fud.log"
-	# Aggiunge l'utente al gruppo fuse
-	#newgrp fuse
-	#printScreen "Aggiunto l'utente $USERNAME al gruppo fuse"
-	
+printScreen "Questo script configurerà Fud tramite domande interattive. Per maggiori informazioni, consultare la documentazione di Fud o fare riferimento al file di esempio fud.sample-conf."
+printScreen -n "Configurare Fud? (Y/n): "
+read SURE
+if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
+	# ---
+	# AZIONI PRELIMINARI
+	# ---
+	# Crea la cartella di Fud, se non esiste
+	if [ ! -e $FUDDIR ]; then
+		mkdir -p $FUDDIR &> /dev/null
+		printScreen "Creata la cartella $FUDDIR"
+	fi
 	printScreen
-	printScreen "Scegli il metodo da utilizzare per la sincronizzazione."
-	printScreen "[1] ssh tramite sshfs"
-	printScreen "[2] ftp tramite curlftpfs"
-	printScreen -n "Metodo: "
-	read method
+	
+	# ---
+	# METODO PER LA CONNESSIONE
+	# ---
+	# Esegue il ciclo finché non viene selezionato un metodo supportato
+	while :; do
+		printScreen "Scegli il metodo da utilizzare per la sincronizzazione."
+		# Cicla l'array METHODS, che contiene indice e nome dei metodi supportati
+		for (( i=1; i<=${tLen=${#METHODS[@]}}; i++ )); do
+			printScreen "[$i] ${METHODS[$i]}"
+		done
+		printScreen -n "Metodo: "
+		read METHOD
+		# Se è stato selezionato un metodo supportato
+		if [[ ${METHODS[$METHOD]} != "" ]]; then
+			# Riscrive la variabile METHOD, che a questo punto conterrà il nome del metodo scelto e potrà essere utilizzata successivamente per porre alcune domande legate ad un metodo scelto
+			METHOD=${METHODS[$METHOD]}
+			printScreen "Selezionato il metodo $METHOD."
+			# Scrive il metodo selezionato nel file di configurazione
+			echo "METHOD=\"$METHOD\"" > $FUDCONF
+			# Termina il ciclo
+			break
+		else
+			printScreen ${RED}"Errore"${RESET}": indicare un metodo tra quelli elencati"
+			printScreen
+			continue
+		fi
+	done
+	printScreen
 
+	# ---
+	# SERVER PER LA CONNESSIONE
+	# ---
+	# Esegue il ciclo finché non viene indicato un server
+	while :; do
+		printScreen -n "Server per la connessione: "
+		read SERVER
+		# Se è stato indicato correttamente un server
+		if [[ $SERVER != "" ]]; then
+			# Scrive il server per la connessione nel file di configurazione
+			echo "SERVER=\"$SERVER\"" >> $FUDCONF
+			# Termina il ciclo
+			break
+		else
+			printScreen ${RED}"Errore"${RESET}": indicare un server per la connessione (nome o ip)"
+			printScreen
+			continue
+		fi
+	done
+	printScreen
+
+	# ---
+	# UTENTE PER LA CONNESSIONE
+	# ---
+	# Esegue il ciclo finché non viene indicato un utente
+	while :; do
+		printScreen -n "Utente per la connessione: "
+		read USER
+		# Se è stato indicato correttamente un utente
+		if [[ $USER != "" ]]; then
+			# Scrive l'utente per la connessione nel file di configurazione
+			echo "USER=\"$USER\"" >> $FUDCONF
+			# Termina il ciclo
+			break
+		else
+			printScreen ${RED}"Errore"${RESET}": indicare un utente per la connessione"
+			printScreen
+			continue
+		fi
+	done
+	printScreen
+
+	# ---
+	# PASSWORD PER LA CONNESSIONE
+	# ---
+	printScreen "Per eseguire la connessione al server, potrebbe essere necessaria una password. Tuttavia, questa opzione non è obbligatoria, perché l'utente indicato potrebbe non avere una password oppure perché si è deciso di utilizzare ssh con un certificato, ad esempio. Nel caso non sia necessario indicare una password, ignorare questo passaggio."
+	printScreen -n "Password per la connessione: "
+	read PWD
+	# Scrive la password per la connessione nel file di configurazione
+	echo "PWD=\"$PWD\"" >> $FUDCONF
+	printScreen
+		
+	# ---
+	# PORTA PER LA CONNESSIONE
+	# ---
+	# Esegue il ciclo finché non viene indicata una porta per la connessione
+	while :; do
+		printScreen -n "Porta per la connessione: "
+		read PORT
+		# Se è stato indicata correttamente una porta
+		if [[ $PORT != "" ]]; then
+			# Scrive la porta per la connessione nel file di configurazione
+			echo "PORT=\"$PORT\"" >> $FUDCONF
+			# Termina il ciclo
+			break
+		else
+			printScreen ${RED}"Errore"${RESET}": indicare una porta per la connessione"
+			printScreen
+			continue
+		fi
+	done
+	printScreen
+
+	# ---
+	# DIRECTORY LOCALE PER LA SINCRONIZZAZIONE
+	# ---
+	printScreen "Indicare una directory locale da sincronizzare. Se questa directory non esiste, verrà creata."
+	printScreen -n "Directory locale da sincronizzare: [/home/$USERNAME/Fud] "
+	read LPATH
+	if [[ $LPATH = "" ]]; then 
+		LPATH="/home/$USERNAME/Fud"
+	fi
+	# Crea la directory locale, se non esiste
+	if [ ! -e $LPATH ]; then
+		mkdir -p $LPATH &> /dev/null
+		printScreen "Creata la cartella $LPATH"
+	fi
+	# Scrive la directory locale nel file di configurazione
+	echo "LPATH=\"$LPATH\"" >> $FUDCONF
+	printScreen
+
+	# ---
+	# DIRECTORY REMOTA PER LA SINCRONIZZAZIONE
+	# ---
+	printScreen "Indicare una directory remota per la sincronizzazione. Se questa directory non verrà indicata, verrà stabilita dal server."
+	printScreen -n "Directory remota per la sincronizzazione: "
+	read RPATH
+	# Scrive la directory remota nel file di configurazione
+	echo "RPATH=\"$RPATH\"" >> $FUDCONF
+	printScreen
+
+	# ---
+	# OPZIONI AGGIUNTIVE PER UNISON
+	# ---
+	printScreen "Se lo si desidera, si possono specificare delle opzioni aggiuntive per Unison, oltre a quelle già utilizzate da Fud. Consultare \`man unison\` per maggiori informazioni. Se non si sa cosa si sta facendo, ignorare questo passaggio."
+	printScreen -n "Opzioni aggiuntive per Unison: "
+	read EXTRAOPTIONS
+	# Scrive la directory remota nel file di configurazione
+	echo "EXTRAOPTIONS=\"$EXTRAOPTIONS\"" >> $FUDCONF	
+	printScreen
+
+	# ---
+	# ABILITAZIONE AUTOSTART
+	# ---
+	printScreen -n "Vuoi che Fud venga lanciato automaticamente all'avvio? (Y/n): "
+	read SURE
+	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
+		# Gnome
+		if [ ! -e "~/.config/autostart" ]; then
+			#Crea il file ~/.config/autostart/fud.desktop
+			echo -e "\n[Desktop Entry]\nName=Fud\nGenericName=File Synchronizer\nComment[en_GB]=Sync your files\nComment[it]=Sincronizza i tuoi file\nExec=fud\nTerminal=false\nType=Application\nIcon=fud\nHidden=false\nCategories=Network;FileTransfer;\nStartupNotify=false" > ~/.config/autostart/fud.desktop
+		fi
+	fi
+	printScreen
+
+	# Fine
+	printScreen $GREEN"Successo"$RESET": Fud è stato correttamente configurato ed è pronto per essere utilizzato. Buona sincronizzazione!"
+	exit;
+
+# Se l'utente ha deciso di non configurare Fud, esce
 else
 	exit 0;
 fi
-
