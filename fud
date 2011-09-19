@@ -108,7 +108,7 @@ notifySinc() {
 
 		# Notifica il numero di file sincronizzati
 		notify-send --icon=$ICON "$MESSAGE"
-		prinScreen $MESSAGE
+		printScreen $MESSAGE
 	fi
 }
 
