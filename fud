@@ -1,7 +1,7 @@
 #!/bin/bash
 
-CONFIGFILE="~/.fud/fud.conf"
-LOGFILE="~/.fud/fud.log"
+CONFIGFILE="$HOME/.fud/fud.conf"
+LOGFILE="$HOME/.fud/fud.log"
 ICON="/usr/share/app-install/icons/fud.png"
 MOUNTPOINT="/mnt/fud"
 
@@ -55,31 +55,43 @@ testStuff () {
 
 # Mount remote directory in /mnt/fud
 mountRemote() {
-	# If /mnt/fud is not already mounted
-	if ! cat /proc/mounts | grep $MOUNTPOINT &> /dev/null; then
-		# Check for ssh connection
-		if [ "$METHOD" == "ssh" ]; then
-			# Check if sshfs is installed
-			if ! which sshfs &> /dev/null; then
-				printScreen $RED"Error:"$RESET" install sshfs first, then restart this script";
-				exit 1
+	while :; do
+		# If /mnt/fud is already mounted, skip
+		if cat /proc/mounts | grep $MOUNTPOINT &> /dev/null; then
+			break;
+		# Else, if /mnt/fud is not already mounted
+		else		
+			# Check for ssh connection
+			if [ "$METHOD" == "ssh" ]; then
+				# Check if sshfs is installed
+				if ! which sshfs &> /dev/null; then
+					printScreen $RED"Error:"$RESET" install sshfs first, then restart this script";
+					exit 1
+				fi
+				# Try to mount the remote directory with sshfs and verify 
+				if ! sshfs $LOGIN@$SERVER:$RPATH $MOUNTPOINT -p $PORT -C &> /dev/null; then
+					printScreen $RED"Error:"$RESET" impossible to login to ssh server. Check your server configuration and your internet connection first, then restart the script"
+					printScreen "Verrà eseguito un altro tentativo tra 30 secondi"
+					sleep 30
+				fi
+			# Check for ftp connection
+			elif [ "$METHOD" == "ftp" ]; then
+				# Check if curlftpfs is installed
+				if ! which curlftpfs &> /dev/null; then
+					printScreen $RED"Error:"$RESET" install curlftpfs first, then restart this script";
+					exit 1
+				fi
+				# Try to mount the remote directory with curlftpfs and verify
+				if ! curlftpfs -v $SERVER:$PORT/$RPATH $MOUNTPOINT -o user=$LOGIN:$PASSWORD -o allow_other -o nonempty; then
+					printScreen $RED"Error:"$RESET" impossible to login to ftp server. Check your server configuration and your internet connection first, then restart the script"
+					printScreen "Verrà eseguito un altro tentativo tra 30 secondi"
+					sleep 30
+				fi
 			fi
-			# Try to mount the remote directory with sshfs and verify 
-			if ! sshfs $USER@$SERVER:$RPATH $MOUNTPOINT -p $PORT -C &> /dev/null; then
-				printScreen $RED"Error:"$RESET" impossible to login to ssh server. Check your server configuration and your internet connection first, then restart the script"
-			fi
-		# Check for ftp connection
-		elif [ "$METHOD" == "ftp" ]; then
-			# Check if curlftpfs is installed
-			if ! which curlftpfs &> /dev/null; then
-				printScreen $RED"Error:"$RESET" install curlftpfs first, then restart this script";
-				exit 1
-			fi
-			# Try to mount the remote directory with curlftpfs and verify
-			if ! curlftpfs $SERVER:$PORT/$RPATH $MOUNTPOINT -o user=$USER:$PASSWORD -o allow_other -o nonempty &> /dev/null; then
-				printScreen $RED"Error:"$RESET" impossible to login to ftp server. Check your server configuration and your internet connection first, then restart the script"
-			fi
+			# Continue while (and re-check)
+			continue
 		fi
+	done
 }
 
 # Notify how many files have been synchronized
@@ -96,6 +108,7 @@ notifySinc() {
 
 		# Notifica il numero di file sincronizzati
 		notify-send --icon=$ICON "$MESSAGE"
+		prinScreen $MESSAGE
 	fi
 }
 

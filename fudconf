@@ -135,7 +135,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	fi
 	# Crea la directory locale, se non esiste
 	if [ ! -e $LPATH ]; then
-		mkdir -p $LPATH &> /dev/null
+		mkdir -p $LPATH
 		printScreen "Creata la cartella $LPATH"
 	fi
 	# Scrive la directory locale nel file di configurazione
@@ -167,7 +167,6 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 		# Aggiunge l'utente al gruppo fuse
 		su -c 'adduser $USER fuse'
-		printScreen "$USER è stato aggiunto al gruppo fuse."
 	fi
 
 	# ---

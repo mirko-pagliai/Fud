@@ -2,6 +2,7 @@
 
 # Dipendenze di Fud
 DEPENDENCIES=(curlftpfs inotify-tools libnotify-bin sshfs unison)
+MOUNTPOINT="/mnt/fud"
 
 #Colors
 RED="\e[1;31m" #Red
@@ -26,15 +27,23 @@ chmod +x /usr/local/bin/fud /usr/local/bin/fudconf
 cp $F/fud.png /usr/share/app-install/icons/
 
 # Modifica, se necessario, il file /etc/fuse.conf
-if grep "user_allow_other" /etc/fuse.conf; then
+if grep "user_allow_other" /etc/fuse.conf &> /dev/null; then
 	sed -i "s/#user_allow_other/user_allow_other/g" /etc/fuse.conf
 else
 	echo "user_allow_other" >> /etc/fuse.conf
 fi
 
-# Crea il mount point e imposta i permessi
-mkdir -p /mnt/fud
-chmod -R 777 /mnt/fud
+# Crea il mount point, se non già esistente
+if [ ! -e $MOUNTPOINT ]; then
+	mkdir -p $MOUNTPOINT
+	printScreen "Creata la directory /mnt/fud per il mount della directory remota."
+fi
+# Se il mount point è già montato, lo smonta
+if ! cat /proc/mounts | grep $MOUNTPOINT &> /dev/null; then
+	umount -f $MOUNTPOINT &> /dev/null
+fi
+# Imposta i permessi del mount point
+chmod -R 777 $MOUNTPOINT
 
 # Determina le dipendenze mancanti
 PKGSTOINSTALL=""
@@ -48,10 +57,14 @@ done
 if [ "$PKGSTOINSTALL" != "" ]; then
 	printScreen -n "Alcune dipendenze sono mancanti. Desideri installarle? (Y/n): "
 	read SURE
-	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
+	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then	
 		apt-get install $PKGSTOINSTALL
+		if [ $? -eq 0 ] ; then
+			printScreen "Tutte le dipendenze sono soddisfatte."
+		fi
 	fi
 fi
 
 printScreen $GREEN"Successo"$RESET": Fud è stato correttamente installato."
+
 exit 0
