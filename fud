@@ -1,7 +1,8 @@
 #!/bin/bash
 
-CONFIGFILE="fud.conf"
-LOGFILE="fud.log"
+CONFIGFILE="~/.fud/fud.conf"
+LOGFILE="~/.fud/fud.log"
+ICON="/usr/share/app-install/icons/fud.png"
 
 #Colors
 RED="\e[1;31m" #Red
@@ -11,7 +12,7 @@ RESET="\e[0m" #Reset!
 
 # NOTA DA RIMUOVERE: questa è una semplice funzione di stampa. Per ora non fa nulla di particolarmente straordinario, ma potrebbe essere utilizzata più in là per sopprimere agevolmente l'output nel terminale, se passata un'opzione come -silent
 # Print on screen
-printScreen() { echo -e $1; }	 
+printScreen() { echo -e "$@"; }
 
 # Test if software installation and server connection are ok
 testStuff () {
@@ -33,9 +34,15 @@ testStuff () {
 		exit 1
 	fi
 
+	# Check if notify-send is installed
+	if ! which notify-send &> /dev/null; then
+		printScreen $RED"Error: "$RESET"install libnotify-bin first, then restart this script";
+		exit 1
+	fi
+
 	# Check if you are in the fuse group
 	if ! groups | grep "fuse" &> /dev/null; then
-		printScreen $RED"Error: "$RESET"your user is not in the fuse group. Type \`newgrp fuse\` first, then restart this script";
+		printScreen $RED"Error: "$RESET"your user is not in the fuse group. Type \`addgroup $USERNAME fuse\` as root first, then logout, login and restart this script";
 		exit 1
 	fi	
 
@@ -59,7 +66,7 @@ testStuff () {
 			exit 1
 		fi
 		# Try to mount the remote directory with curlftpfs and verify
-		if ! curlftpfs $SERVER:$PORT/$RPATH /mnt/fud -o user=$USER:$PWD -o allow_other -o nonempty &> /dev/null; then
+		if ! curlftpfs $SERVER:$PORT/$RPATH /mnt/fud -o user=$USER:$PASSWORD -o allow_other -o nonempty &> /dev/null; then
 			printScreen $RED"Error: "$RESET"impossible to login to ftp server. Check your server configuration first, then restart the script"
 			exit 1
 		fi
@@ -78,7 +85,7 @@ syncDir() {
 			MESSAGE="$SYNCFILES files have been synchronized"
 		fi
 
-		notify-send --icon=/usr/share/app-install/icons/fud.png "$MESSAGE"
+		notify-send --icon=$ICON "$MESSAGE"
 	fi
 }
 

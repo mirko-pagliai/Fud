@@ -26,7 +26,6 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 		mkdir -p $FUDDIR &> /dev/null
 		printScreen "Creata la cartella $FUDDIR"
 	fi
-	printScreen
 	
 	# ---
 	# METODO PER LA CONNESSIONE
@@ -55,7 +54,6 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 			continue
 		fi
 	done
-	printScreen
 
 	# ---
 	# SERVER PER LA CONNESSIONE
@@ -76,7 +74,6 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 			continue
 		fi
 	done
-	printScreen
 
 	# ---
 	# UTENTE PER LA CONNESSIONE
@@ -97,17 +94,15 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 			continue
 		fi
 	done
-	printScreen
 
 	# ---
 	# PASSWORD PER LA CONNESSIONE
 	# ---
 	printScreen "Per eseguire la connessione al server, potrebbe essere necessaria una password. Tuttavia, questa opzione non è obbligatoria, perché l'utente indicato potrebbe non avere una password oppure perché si è deciso di utilizzare ssh con un certificato, ad esempio. Nel caso non sia necessario indicare una password, ignorare questo passaggio."
 	printScreen -n "Password per la connessione: "
-	read PWD
+	read PASSWORD
 	# Scrive la password per la connessione nel file di configurazione
-	echo "PWD=\"$PWD\"" >> $FUDCONF
-	printScreen
+	echo "PASSWORD=\"$PASSWORD\"" >> $FUDCONF
 		
 	# ---
 	# PORTA PER LA CONNESSIONE
@@ -128,7 +123,6 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 			continue
 		fi
 	done
-	printScreen
 
 	# ---
 	# DIRECTORY LOCALE PER LA SINCRONIZZAZIONE
@@ -146,7 +140,6 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	fi
 	# Scrive la directory locale nel file di configurazione
 	echo "LPATH=\"$LPATH\"" >> $FUDCONF
-	printScreen
 
 	# ---
 	# DIRECTORY REMOTA PER LA SINCRONIZZAZIONE
@@ -156,7 +149,6 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	read RPATH
 	# Scrive la directory remota nel file di configurazione
 	echo "RPATH=\"$RPATH\"" >> $FUDCONF
-	printScreen
 
 	# ---
 	# OPZIONI AGGIUNTIVE PER UNISON
@@ -166,7 +158,17 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	read EXTRAOPTIONS
 	# Scrive la directory remota nel file di configurazione
 	echo "EXTRAOPTIONS=\"$EXTRAOPTIONS\"" >> $FUDCONF	
-	printScreen
+
+	# ---
+	# AGGIUNTA AL GRUPPO FUSE
+	# ---
+	printScreen -n "Aggiungere l'utente al gruppo fuse? Sarà necessario inserire la password di root (Y/n): "
+	read SURE
+	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
+		# Aggiunge l'utente al gruppo fuse
+		su -c 'adduser $USERNAME fuse'
+		printScreen "$USERNAME è stato aggiunto al gruppo fuse."
+	fi
 
 	# ---
 	# ABILITAZIONE AUTOSTART
@@ -184,6 +186,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 
 	# Fine
 	printScreen $GREEN"Successo"$RESET": Fud è stato correttamente configurato ed è pronto per essere utilizzato. Buona sincronizzazione!"
+	printScreen "Se hai appena aggiunto il tuo utente al gruppo fuse, devi effettuare logout e login prima di poter utilizzare Fud"
 	exit;
 
 # Se l'utente ha deciso di non configurare Fud, esce
