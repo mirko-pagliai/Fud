@@ -11,7 +11,7 @@ GREEN="\e[1;32m" #Green
 YELLOW="\e[1;33m" #Yellow
 RESET="\e[0m" #Reset!
 
-# NOTA DA RIMUOVERE: questa è una semplice funzione di stampa. Per ora non fa nulla di particolarmente straordinario, ma potrebbe essere utilizzata più in là per sopprimere agevolmente l'output nel terminale, se passata un'opzione come -silent
+# NOTA DA RIMUOVERE: questa è una semplice funzione di stampa. Per ora non fa nulla di particolarmente straordinario, ma potrebbe essere utilizzata più in là per sopprimere agevolmente l'output nel terminale, se passata un'opzione come -silent.
 # Print on screen
 printScreen() { echo -e "$@"; }
 
