@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Dipendenze di Fud
+DEPENDENCIES=(curlftpfs inotify-tools libnotify-bin sshfs unison)
+
 #Colors
 RED="\e[1;31m" #Red
 GREEN="\e[1;32m" #Green
@@ -22,5 +25,33 @@ chmod +x /usr/local/bin/fud /usr/local/bin/fudconf
 # Copia l'icona in /usr/share/app-install/icons/
 cp $F/fud.png /usr/share/app-install/icons/
 
-#Installa i pacchetti necessari
-apt-get install curlftpfs inotify-tools libnotify-bin sshfs unison 
+# Modifica, se necessario, il file /etc/fuse.conf
+if grep "user_allow_other" /etc/fuse.conf; then
+	sed -i "s/#user_allow_other/user_allow_other/g" /etc/fuse.conf
+else
+	echo "user_allow_other" >> /etc/fuse.conf
+fi
+
+# Crea il mount point e imposta i permessi
+mkdir -p /mnt/fud
+chmod -R 777 /mnt/fud
+
+# Determina le dipendenze mancanti
+PKGSTOINSTALL=""
+for (( i=0; i<${tLen=${#DEPENDENCIES[@]}}; i++ )); do
+	if [[ ! `dpkg -l | grep -w "ii  ${DEPENDENCIES[$i]} "` ]]; then
+		PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
+	fi
+done
+
+# Se alcune dipendenze sono mancanti, chiede se installarle
+if [ "$PKGSTOINSTALL" != "" ]; then
+	printScreen -n "Alcune dipendenze sono mancanti. Desideri installarle? (Y/n): "
+	read SURE
+	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
+		apt-get install $PKGSTOINSTALL
+	fi
+fi
+
+printScreen $GREEN"Successo"$RESET": Fud è stato correttamente installato."
+exit 0

@@ -81,11 +81,11 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	# Esegue il ciclo finché non viene indicato un utente
 	while :; do
 		printScreen -n "Utente per la connessione: "
-		read USER
+		read LOGIN
 		# Se è stato indicato correttamente un utente
-		if [[ $USER != "" ]]; then
+		if [[ $LOGIN != "" ]]; then
 			# Scrive l'utente per la connessione nel file di configurazione
-			echo "USER=\"$USER\"" >> $FUDCONF
+			echo "LOGIN=\"$LOGIN\"" >> $FUDCONF
 			# Termina il ciclo
 			break
 		else
@@ -128,10 +128,10 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	# DIRECTORY LOCALE PER LA SINCRONIZZAZIONE
 	# ---
 	printScreen "Indicare una directory locale da sincronizzare. Se questa directory non esiste, verrà creata."
-	printScreen -n "Directory locale da sincronizzare: [/home/$USERNAME/Fud] "
+	printScreen -n "Directory locale da sincronizzare: [/home/$USER/Backup] "
 	read LPATH
 	if [[ $LPATH = "" ]]; then 
-		LPATH="/home/$USERNAME/Fud"
+		LPATH="/home/$USER/Backup"
 	fi
 	# Crea la directory locale, se non esiste
 	if [ ! -e $LPATH ]; then
@@ -166,8 +166,8 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	read SURE
 	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 		# Aggiunge l'utente al gruppo fuse
-		su -c 'adduser $USERNAME fuse'
-		printScreen "$USERNAME è stato aggiunto al gruppo fuse."
+		su -c 'adduser $USER fuse'
+		printScreen "$USER è stato aggiunto al gruppo fuse."
 	fi
 
 	# ---
@@ -187,9 +187,9 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	# Fine
 	printScreen $GREEN"Successo"$RESET": Fud è stato correttamente configurato ed è pronto per essere utilizzato. Buona sincronizzazione!"
 	printScreen "Se hai appena aggiunto il tuo utente al gruppo fuse, devi effettuare logout e login prima di poter utilizzare Fud"
-	exit;
+	exit 0;
 
 # Se l'utente ha deciso di non configurare Fud, esce
 else
-	exit 0;
+	exit 1;
 fi

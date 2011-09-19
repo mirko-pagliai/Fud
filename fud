@@ -3,6 +3,7 @@
 CONFIGFILE="~/.fud/fud.conf"
 LOGFILE="~/.fud/fud.log"
 ICON="/usr/share/app-install/icons/fud.png"
+MOUNTPOINT="/mnt/fud"
 
 #Colors
 RED="\e[1;31m" #Red
@@ -17,11 +18,16 @@ printScreen() { echo -e "$@"; }
 # Test if software installation and server connection are ok
 testStuff () {
 	# Check if mount point is avaible
-	if [[ ! -e /mnt/fud ]]; then
-		printScreen $RED"Error: "$RESET"mount point /mnt/fud is not available. Type \`mkdir -p /mnt/fud\` as root first, then restart this script";
+	if [[ ! -e $MOUNTPOINT ]]; then
+		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not available. Type \`mkdir -p $MOUNTPOINT\` as root first, then restart this script";
 		exit 1
 	fi
 
+	# Check if mount point is writable
+	if [[ ! -w $MOUNTPOINT ]]; then
+		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not writable. Type \`chmod -R 777 $MOUNTPOINT\` as root first, then restart this script";
+		exit 1
+	fi
 	# Check if inotify is installed
 	if ! which inotifywait &> /dev/null; then
 		printScreen $RED"Error: "$RESET"install inotify-tools first, then restart this script"
@@ -40,53 +46,66 @@ testStuff () {
 		exit 1
 	fi
 
-	# Check if you are in the fuse group
+	# Check if user is in the fuse group
 	if ! groups | grep "fuse" &> /dev/null; then
-		printScreen $RED"Error: "$RESET"your user is not in the fuse group. Type \`addgroup $USERNAME fuse\` as root first, then logout, login and restart this script";
+		printScreen $RED"Error: "$RESET"your user is not in the fuse group. Type \`addgroup $USER fuse\` as root first, then logout, login and restart this script";
 		exit 1
 	fi	
+}
 
-	#Check for ssh connection
-	if [ "$METHOD" == "ssh" ]; then
-		# Check if sshfs is installed
-		if ! which sshfs &> /dev/null; then
-			printScreen $RED"Error: "$RESET"install sshfs first, then restart this script";
-			exit 1
+# Mount remote directory in /mnt/fud
+mountRemote() {
+	# If /mnt/fud is not already mounted
+	if ! cat /proc/mounts | grep $MOUNTPOINT &> /dev/null; then
+		# Check for ssh connection
+		if [ "$METHOD" == "ssh" ]; then
+			# Check if sshfs is installed
+			if ! which sshfs &> /dev/null; then
+				printScreen $RED"Error:"$RESET" install sshfs first, then restart this script";
+				exit 1
+			fi
+			# Try to mount the remote directory with sshfs and verify 
+			if ! sshfs $USER@$SERVER:$RPATH $MOUNTPOINT -p $PORT -C &> /dev/null; then
+				printScreen $RED"Error:"$RESET" impossible to login to ssh server. Check your server configuration and your internet connection first, then restart the script"
+			fi
+		# Check for ftp connection
+		elif [ "$METHOD" == "ftp" ]; then
+			# Check if curlftpfs is installed
+			if ! which curlftpfs &> /dev/null; then
+				printScreen $RED"Error:"$RESET" install curlftpfs first, then restart this script";
+				exit 1
+			fi
+			# Try to mount the remote directory with curlftpfs and verify
+			if ! curlftpfs $SERVER:$PORT/$RPATH $MOUNTPOINT -o user=$USER:$PASSWORD -o allow_other -o nonempty &> /dev/null; then
+				printScreen $RED"Error:"$RESET" impossible to login to ftp server. Check your server configuration and your internet connection first, then restart the script"
+			fi
 		fi
-		# Try to mount the remote directory with sshfs and verify 
-		if ! sshfs $USER@$SERVER:$RPATH /mnt/fud -p $PORT -C &> /dev/null; then
-			printScreen $RED"Error: "$RESET"impossible to login to ssh server. Check your server configuration first, then restart the script"
-			exit 1
+}
+
+# Notify how many files have been synchronized
+notifySinc() {
+	# Controlla se almeno un file è stato sincronizzato
+	if [[ "$1" -ge "1" ]]; then
+		# Se un file (e uno solo è stato sincronizzato)
+		if [[ "$1" -eq "1" ]]; then
+			MESSAGE="$1 file have been synchronized"
+		# Se è stato sincronizzato più di un file
+		elif [[ "$1" -gt "1" ]]; then
+			MESSAGE="$1 files have been synchronized"
 		fi
-	# Check for ftp connection
-	elif [ "$METHOD" == "ftp" ]; then
-		# Check if curlftpfs is installed
-		if ! which curlftpfs &> /dev/null; then
-			printScreen $RED"Error: "$RESET"install curlftpfs first, then restart this script";
-			exit 1
-		fi
-		# Try to mount the remote directory with curlftpfs and verify
-		if ! curlftpfs $SERVER:$PORT/$RPATH /mnt/fud -o user=$USER:$PASSWORD -o allow_other -o nonempty &> /dev/null; then
-			printScreen $RED"Error: "$RESET"impossible to login to ftp server. Check your server configuration first, then restart the script"
-			exit 1
-		fi
+
+		# Notifica il numero di file sincronizzati
+		notify-send --icon=$ICON "$MESSAGE"
 	fi
 }
 
-# Start 
+# Sync 
 syncDir() {
-	OUTPUT=$(unison $LPATH /mnt/fud -logfile $LOGFILE $EXTRAOPTIONS -batch -auto -terse -confirmbigdel="false" -retry 3 -times 2>&1)
+	OUTPUT=$(unison $LPATH $MOUNTPOINT -logfile $LOGFILE $EXTRAOPTIONS -batch -auto -terse -confirmbigdel="false" -retry 3 2>&1)
+	# SYNCFILES conterrà il numero di file sincronizzati
 	SYNCFILES=$(echo `expr match "$OUTPUT" '.*\(([0-9]* item[s]* transferred\)'` | sed -n "s/(//g;s/item[s]* transferred//g;/[0-9]*/p")
-	
-	if [[ "$SYNCFILES" -ge "1" ]]; then
-		if [[ "$SYNCFILES" -eq "1" ]]; then
-			MESSAGE="$SYNCFILES file have been synchronized"
-		elif [[ "$SYNCFILES" -gt "1" ]]; then
-			MESSAGE="$SYNCFILES files have been synchronized"
-		fi
-
-		notify-send --icon=$ICON "$MESSAGE"
-	fi
+	# Notice how many files have been synchronized
+	notifySinc $SYNCFILES
 }
 
 # SCRIPT STARTS HERE
@@ -96,16 +115,23 @@ if [[ -e $CONFIGFILE ]]; then
 	source $CONFIGFILE
 	# Perform test
 	testStuff
-	# Finally, sync dirs
-	syncDir
-	while inotifywait -r -e modify -e create -e move -e delete -e open $LPATH /mnt/fud/ &> /dev/null; do
-		echo "Sync... wait."
-		sleep 10
+
+	# Mount remote directory and sync
+	while :; do
+		# Mount remote directory
+		mountRemote
+		# Finally, sync dirs
 		syncDir
+		while inotifywait -r -e modify -e create -e move -e delete -e open $LPATH $MOUNTPOINT &> /dev/null; do
+			sleep 10
+			syncDir
+		done
+		# Sleep if remote folder is not mounted or if the synchronization failed
+		sleep 30
 	done
 	exit 0
 # If config file doesn't exists
 else
-	printScreen $RED"Error: "$RESET"create and set "$FILELIST" first, then restart the script";	
+	printScreen $RED"Error: "$RESET"create and set "$CONFIGFILE" first, then restart the script";	
 	exit 1
 fi
