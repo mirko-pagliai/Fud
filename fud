@@ -94,6 +94,43 @@ mountRemote() {
 	done
 }
 
+# Check if user will connect trough proxy
+checkProxy() {
+	# CHECK
+	# ---
+	printScreen -n "È necessario autenticarsi su di un Proxy per connettersi ad Internet? (y/N): "
+	read SURE
+	if [[ $SURE = "y" || $SURE = "Y" ]]; then
+		PROXYCONF="$HOME/.fud/proxy.conf"
+		# Cerca il file proxy.conf
+		if [[ ! -f $PROXYCONF ]]; then			
+			printScreen -n "Server Proxy: "
+			read PROXYSERVER
+			# Scrive l'indirizzo del proxy nel file di configurazione
+			echo "PROXYSERVER=\"$PROXYSERVER\"" >> $PROXYCONF
+			
+			printScreen -n "Porta: "
+			read PROXYPORT
+			# Scrive la porta del proxy nel file di configurazione
+			echo "PROXYPORT=\"$PROXYPORT\"" >> $PROXYCONF
+			
+			printScreen -n "Nome utente proxy: "
+			read PROXYUSER
+			# Scrive il nome utente del proxy nel file di configurazione
+			echo "PROXYUSER=\"$PROXYUSER\"" >> $PROXYCONF
+			
+			printScreen -n "Password: "
+			read PROXYPASSWORD
+			# Scrive la password nel file di configurazione
+			echo "PROXYPASSWORD=\"$PROXYPASSWORD\"" >> $PROXYCONF
+		fi
+		# Esporta la variabile
+		source $PROXYCONF
+		proxyparams="http://$PROXYUSER:$PROXYPASSWORD@$PROXYSERVER:$PROXYPORT"
+		declare -x http_proxy=$proxyparams
+	fi
+}
+
 # Notify how many files have been synchronized
 notifySinc() {
 	# Controlla se almeno un file è stato sincronizzato
@@ -128,6 +165,9 @@ if [[ -e $CONFIGFILE ]]; then
 	source $CONFIGFILE
 	# Perform test
 	testStuff
+	
+	# Check Proxy
+	checkProxy
 
 	# Mount remote directory and sync
 	while :; do
