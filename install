@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#Colors
+RED="\e[1;31m" #Red
+GREEN="\e[1;32m" #Green
+RESET="\e[0m" #Reset!
+
+# Print on screen
+printScreen() { echo -e "$@"; }
+
+# Verifica se l'utente è root
+if [[ $EUID -ne 0 ]]; then
+   printScreen $RED"Errore:"$RESET" questo script deve essere eseguito come root"
+   exit 1
+fi
+
+# F è la directory in cui si trova questo script
+F=$(dirname $(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}"))
+# Copia gli eseguibili in /usr/local/bin e imposta i permessi di esecuzione
+cp $F/fud $F/fudconf /usr/local/bin
+chmod +x /usr/local/bin/fud /usr/local/bin/fudconf
+# Copia l'icona in /usr/share/app-install/icons/
+cp $F/fud.png /usr/share/app-install/icons/
+
+#Installa i pacchetti necessari
+apt-get install curlftpfs inotify-tools libnotify-bin sshfs unison 
