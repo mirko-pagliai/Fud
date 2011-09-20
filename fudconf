@@ -26,6 +26,8 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 		mkdir -p $FUDDIR &> /dev/null
 		printScreen "Create directory $FUDDIR"
 	fi
+	# Set Fud directory permissions
+	chmod -R 755 $FUDDIR
 	
 	# ---
 	# CONNECTION METHOD
@@ -113,24 +115,23 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	# ---
 	# PORT FOR CONNECTION
 	# ---
-	# Executes the loop until a port for connection is entered
-	while :; do
-		printScreen -n "Port for connection: "
-		read PORT
-		# If a port has been correctly entered
-		if [[ $PORT != "" ]]; then
-			# Write port in the configuration file
-			echo "PORT=\"$PORT\"" >> $FUDCONF
-			# Break loop
-			break
-		# If a port has not been correctly entered
-		else
-			printScreen ${RED}"Errore"${RESET}": enter a port for connection"
-			printScreen
-			# Continue loop
-			continue
-		fi
-	done
+	# First, defines the default ports for each method
+	case $METHOD in 
+		# Ssh method
+		ssh) 
+			DPORT="21";;
+		# Ftp method 
+		ftp) 
+			DPORT="22";; 
+	esac
+	printScreen -n "Port for connection ($DPORT): "
+	read PORT
+	# If a port has not been specified, set at default port for the selected method
+	if [[ $PORT = "" ]]; then
+		PORT=$DPORT
+	fi
+	# Write port in the configuration file
+	echo "PORT=\"$PORT\"" >> $FUDCONF
 
 	# ---
 	# LOCAL DIRECTORY TO SYNCHRONIZE
@@ -147,6 +148,8 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 		mkdir -p $LPATH
 		printScreen "Create directory $LPATH"
 	fi
+	# Set local directory permissions
+	chmod -R 755 $FUDDIR
 	# Write local directory in the configuration file
 	echo "LPATH=\"$LPATH\"" >> $FUDCONF
 
@@ -171,11 +174,14 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	# ---
 	# ADD TO FUSE GROUP
 	# ---
-	printScreen -n "Do you wanna add your user to fuse group? You will need to enter the root password (Y/n): "
-	read SURE
-	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
-		# Add user to fuse group
-		su -c 'adduser $USER fuse'
+	# Check if user is in the fuse group
+	if ! groups | grep "fuse" &> /dev/null; then
+		printScreen -n "Do you wanna add your user to fuse group? You will need to enter the root password (Y/n): "
+		read SURE
+		if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
+			# Add user to fuse group
+			su -c 'adduser $USER fuse'
+		fi
 	fi
 
 	# ---
@@ -184,11 +190,14 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	printScreen -n "Would you like Fud is launched automatically at startup? (Y/n): "
 	read SURE
 	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
-		# Gnome
-		if [ ! -e "~/.config/autostart" ]; then
-			# Create ~/.config/autostart/fud.desktop
-			echo -e "\n[Desktop Entry]\nName=Fud\nGenericName=File Synchronizer\nComment[en_GB]=Sync your files\nComment[it]=Sincronizza i tuoi file\nExec=fud\nTerminal=false\nType=Application\nIcon=fud\nHidden=false\nCategories=Network;FileTransfer;\nStartupNotify=false" > ~/.config/autostart/fud.desktop
-		fi
+		# Create ~/.config/autostart, if doesn't exists
+		mkdir -p ~/.config/autostart/
+		# Create ~/.config/autostart/fud.desktop file
+		echo -e "\n[Desktop Entry]\nName=Fud\nGenericName=File Synchronizer\nComment[en_GB]=Sync your files\nComment[it]=Sincronizza i tuoi file\nExec=fud\nTerminal=false\nType=Application\nIcon=fud\nHidden=false\nCategories=Network;FileTransfer;\nStartupNotify=false" > ~/.config/autostart/fud.desktop
+	# If user doesn't wanna launch fud at startup
+	else
+		# Remove ~/.config/autostart/fud.desktop, if exists
+		rm -f ~/.config/autostart/fud.desktop
 	fi
 	printScreen
 
