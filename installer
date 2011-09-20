@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Dipendenze di Fud
+# Fud Dependencies
 DEPENDENCIES=(curlftpfs inotify-tools libnotify-bin sshfs unison)
 MOUNTPOINT="/mnt/fud"
 
@@ -12,40 +12,40 @@ RESET="\e[0m" #Reset!
 # Print on screen
 printScreen() { echo -e "$@"; }
 
-# Verifica se l'utente è root
+# Check if user is root
 if [[ $EUID -ne 0 ]]; then
-   printScreen $RED"Errore:"$RESET" questo script deve essere eseguito come root"
+   printScreen $RED"Error:"$RESET" this script must be run as root"
    exit 1
 fi
 
-# F è la directory in cui si trova questo script
+# F is the directory where this script is located
 F=$(dirname $(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}"))
-# Copia gli eseguibili in /usr/local/bin e imposta i permessi di esecuzione
+# Copy executables files in /usr/local/bin and set execute permissions
 cp $F/fud $F/fudconf /usr/local/bin
 chmod +x /usr/local/bin/fud /usr/local/bin/fudconf
-# Copia l'icona in /usr/share/app-install/icons/
+# Conpy Fud icon in /usr/share/app-install/icons/
 cp $F/fud.png /usr/share/app-install/icons/
 
-# Modifica, se necessario, il file /etc/fuse.conf
+# Change, if necessary, /etc/fuse.conf file
 if grep "user_allow_other" /etc/fuse.conf &> /dev/null; then
 	sed -i "s/#user_allow_other/user_allow_other/g" /etc/fuse.conf
 else
 	echo "user_allow_other" >> /etc/fuse.conf
 fi
 
-# Crea il mount point, se non già esistente
+# Create the mount point, if doesn't exists
 if [ ! -e $MOUNTPOINT ]; then
 	mkdir -p $MOUNTPOINT
 	printScreen "Creata la directory /mnt/fud per il mount della directory remota."
 fi
-# Se il mount point è già montato, lo smonta
+# If the mount point is already mounted, unmount it
 if ! cat /proc/mounts | grep $MOUNTPOINT &> /dev/null; then
 	umount -f $MOUNTPOINT &> /dev/null
 fi
-# Imposta i permessi del mount point
+# Set mount point permissions
 chmod -R 777 $MOUNTPOINT
 
-# Determina le dipendenze mancanti
+# Check for missing dependencies
 PKGSTOINSTALL=""
 for (( i=0; i<${tLen=${#DEPENDENCIES[@]}}; i++ )); do
 	if [[ ! `dpkg -l | grep -w "ii  ${DEPENDENCIES[$i]} "` ]]; then
@@ -53,18 +53,18 @@ for (( i=0; i<${tLen=${#DEPENDENCIES[@]}}; i++ )); do
 	fi
 done
 
-# Se alcune dipendenze sono mancanti, chiede se installarle
+# If some dependencies are missing, asks if he wants to install
 if [ "$PKGSTOINSTALL" != "" ]; then
-	printScreen -n "Alcune dipendenze sono mancanti. Desideri installarle? (Y/n): "
+	printScreen -n "Some dependencies are missing. Want to install them? (Y/n): "
 	read SURE
 	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then	
 		apt-get install $PKGSTOINSTALL
 		if [ $? -eq 0 ] ; then
-			printScreen "Tutte le dipendenze sono soddisfatte."
+			printScreen "All dependencies are satisfied."
 		fi
 	fi
 fi
 
-printScreen $GREEN"Successo"$RESET": Fud è stato correttamente installato."
+printScreen $GREEN"Success"$RESET": Fud has been properly installed."
 
 exit 0

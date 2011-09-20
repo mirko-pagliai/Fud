@@ -71,7 +71,7 @@ mountRemote() {
 				# Try to mount the remote directory with sshfs and verify 
 				if ! sshfs $LOGIN@$SERVER:$RPATH $MOUNTPOINT -p $PORT -C &> /dev/null; then
 					printScreen $RED"Error:"$RESET" impossible to login to ssh server. Check your server configuration and your internet connection first, then restart the script"
-					printScreen "Verrà eseguito un altro tentativo tra 30 secondi"
+					printScreen "One more try in 30 seconds"
 					sleep 30
 				fi
 			# Check for ftp connection
@@ -84,11 +84,11 @@ mountRemote() {
 				# Try to mount the remote directory with curlftpfs and verify
 				if ! curlftpfs -v $SERVER:$PORT/$RPATH $MOUNTPOINT -o user=$LOGIN:$PASSWORD -o allow_other -o nonempty; then
 					printScreen $RED"Error:"$RESET" impossible to login to ftp server. Check your server configuration and your internet connection first, then restart the script"
-					printScreen "Verrà eseguito un altro tentativo tra 30 secondi"
+					printScreen "One more try in 30 seconds"
 					sleep 30
 				fi
 			fi
-			# Continue while (and re-check)
+			# Continue while (and re-check for a connection)
 			continue
 		fi
 	done
@@ -96,17 +96,17 @@ mountRemote() {
 
 # Notify how many files have been synchronized
 notifySinc() {
-	# Controlla se almeno un file è stato sincronizzato
+	# Check if at least one file has been synchronized
 	if [[ "$1" -ge "1" ]]; then
-		# Se un file (e uno solo è stato sincronizzato)
+		# If a file (and only one) has been synchronized
 		if [[ "$1" -eq "1" ]]; then
 			MESSAGE="$1 file have been synchronized"
-		# Se è stato sincronizzato più di un file
+		# If more files has been synchronized
 		elif [[ "$1" -gt "1" ]]; then
 			MESSAGE="$1 files have been synchronized"
 		fi
 
-		# Notifica il numero di file sincronizzati
+		# Notify how many files have been synchronized
 		notify-send --icon=$ICON "$MESSAGE"
 		printScreen $MESSAGE
 	fi
@@ -115,9 +115,9 @@ notifySinc() {
 # Sync 
 syncDir() {
 	OUTPUT=$(unison $LPATH $MOUNTPOINT -logfile $LOGFILE $EXTRAOPTIONS -batch -auto -terse -confirmbigdel="false" -retry 3 2>&1)
-	# SYNCFILES conterrà il numero di file sincronizzati
+	# SYNCFILES will contain the number of files synchronized
 	SYNCFILES=$(echo `expr match "$OUTPUT" '.*\(([0-9]* item[s]* transferred\)'` | sed -n "s/(//g;s/item[s]* transferred//g;/[0-9]*/p")
-	# Notice how many files have been synchronized
+	# Notify how many files have been synchronized
 	notifySinc $SYNCFILES
 }
 
