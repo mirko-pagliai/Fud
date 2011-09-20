@@ -3,7 +3,7 @@
 CONFIGFILE="$HOME/.fud/fud.conf"
 LOGFILE="$HOME/.fud/fud.log"
 ICON="/usr/share/app-install/icons/fud.png"
-MOUNTPOINT="/mnt/fud"
+MOUNTPOINT="$HOME/.fud/remotedir"
 
 #Colors
 RED="\e[1;31m" #Red
@@ -19,13 +19,13 @@ printScreen() { echo -e "$@"; }
 testStuff () {
 	# Check if mount point is avaible
 	if [[ ! -e $MOUNTPOINT ]]; then
-		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not available. Type \`mkdir -p $MOUNTPOINT\` as root first, then restart this script";
+		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not available. Type \`mkdir -p $MOUNTPOINT\` first, then restart this script";
 		exit 1
 	fi
 
 	# Check if mount point is writable
 	if [[ ! -w $MOUNTPOINT ]]; then
-		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not writable. Type \`chmod -R 777 $MOUNTPOINT\` as root first, then restart this script";
+		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not writable. Type \`chmod -R 755 $MOUNTPOINT\` first, then restart this script";
 		exit 1
 	fi
 	# Check if inotify is installed
@@ -53,13 +53,13 @@ testStuff () {
 	fi	
 }
 
-# Mount remote directory in /mnt/fud
+# Mount remote directory in $HOME/.fud/remotedir
 mountRemote() {
 	while :; do
-		# If /mnt/fud is already mounted, skip
+		# If $HOME/.fud/remotedir is already mounted, skip
 		if cat /proc/mounts | grep $MOUNTPOINT &> /dev/null; then
 			break;
-		# Else, if /mnt/fud is not already mounted
+		# Else, if $HOME/.fud/remotedir is not already mounted
 		else		
 			# Check for ssh connection
 			if [ "$METHOD" == "ssh" ]; then
@@ -94,42 +94,6 @@ mountRemote() {
 	done
 }
 
-# Check if user will connect trough proxy
-checkProxy() {
-	# CHECK
-	# ---
-	printScreen -n "È necessario autenticarsi su di un Proxy per connettersi ad Internet? (y/N): "
-	read SURE
-	if [[ $SURE = "y" || $SURE = "Y" ]]; then
-		PROXYCONF="$HOME/.fud/proxy.conf"
-		# Cerca il file proxy.conf
-		if [[ ! -f $PROXYCONF ]]; then			
-			printScreen -n "Server Proxy: "
-			read PROXYSERVER
-			# Scrive l'indirizzo del proxy nel file di configurazione
-			echo "PROXYSERVER=\"$PROXYSERVER\"" >> $PROXYCONF
-			
-			printScreen -n "Porta: "
-			read PROXYPORT
-			# Scrive la porta del proxy nel file di configurazione
-			echo "PROXYPORT=\"$PROXYPORT\"" >> $PROXYCONF
-			
-			printScreen -n "Nome utente proxy: "
-			read PROXYUSER
-			# Scrive il nome utente del proxy nel file di configurazione
-			echo "PROXYUSER=\"$PROXYUSER\"" >> $PROXYCONF
-			
-			printScreen -n "Password: "
-			read PROXYPASSWORD
-			# Scrive la password nel file di configurazione
-			echo "PROXYPASSWORD=\"$PROXYPASSWORD\"" >> $PROXYCONF
-		fi
-		# Esporta la variabile
-		source $PROXYCONF
-		proxyparams="http://$PROXYUSER:$PROXYPASSWORD@$PROXYSERVER:$PROXYPORT"
-		declare -x http_proxy=$proxyparams
-	fi
-}
 
 # Notify how many files have been synchronized
 notifySinc() {
@@ -166,9 +130,6 @@ if [[ -e $CONFIGFILE ]]; then
 	# Perform test
 	testStuff
 	
-	# Check Proxy
-	checkProxy
-
 	# Mount remote directory and sync
 	while :; do
 		# Mount remote directory

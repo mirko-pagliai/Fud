@@ -2,7 +2,7 @@
 
 # Dipendenze di Fud
 DEPENDENCIES=(curlftpfs inotify-tools libnotify-bin sshfs unison)
-MOUNTPOINT="/mnt/fud"
+
 
 #Colors
 RED="\e[1;31m" #Red
@@ -32,18 +32,6 @@ if grep "user_allow_other" /etc/fuse.conf &> /dev/null; then
 else
 	echo "user_allow_other" >> /etc/fuse.conf
 fi
-
-# Crea il mount point, se non già esistente
-if [ ! -e $MOUNTPOINT ]; then
-	mkdir -p $MOUNTPOINT
-	printScreen "Creata la directory /mnt/fud per il mount della directory remota."
-fi
-# Se il mount point è già montato, lo smonta
-if ! cat /proc/mounts | grep $MOUNTPOINT &> /dev/null; then
-	umount -f $MOUNTPOINT &> /dev/null
-fi
-# Imposta i permessi del mount point
-chmod -R 777 $MOUNTPOINT
 
 # Determina le dipendenze mancanti
 PKGSTOINSTALL=""
