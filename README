@@ -1,0 +1,66 @@
+FUD
+
+
+What is it?
+-----------
+
+FUD stands for Fuck U D... (guess what D means?).
+It was written and it is actively developed in order to offer a free 
+software alternative to proprietary software just like Dropbox, 
+Box.Net, etc.
+Users will be able to sync local folders to remote one via ftp or ssh 
+protocol.
+The only thing needed is an ssh or an ftp account even on a shared 
+host!
+
+
+The Latest Version
+------------------
+
+Details of the latest version can be found on the FUD project page 
+under https://github.com/mirkop88/Fud/wiki.
+
+
+Files
+-----
+
+- fud (the script which will synchronize folders)
+- fudconf (user configuration script)
+- fud.sample-conf (just an example of configuration file)
+- install (root install script=
+- LICENSE (GPL V.3 license file)
+- README (this file)
+
+
+How does FUD works?
+------------
+
+First of all installation is needed:
+$ cd Fud
+$ su -
+password
+# ./install
+# exit
+
+then some configuration:
+$ fudconf
+
+finally... just run it:
+$ fud
+
+That's all!
+
+
+Licensing
+---------
+
+Please see the file called LICENSE.
+
+
+
+Contacts
+--------
+
+ o If you want to participate in actively developing FUD just join 
+   us to https://github.com/mirkop88/Fud/wiki, git clone the master or 
+   trunk branch and have fun whith the code!
