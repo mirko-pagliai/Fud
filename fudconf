@@ -2,6 +2,7 @@
 
 FUDDIR="$HOME/.fud"
 FUDCONF="$FUDDIR/fud.conf"
+MOUNTPOINT="$HOME/.fud/remotedir"
 
 METHODS[1]="ssh"
 METHODS[2]="ftp"
@@ -25,6 +26,18 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	if [ ! -e $FUDDIR ]; then
 		mkdir -p $FUDDIR &> /dev/null
 		printScreen "Creata la cartella $FUDDIR"
+	fi
+
+	# Crea il mount point, se non già esistente
+	if [ ! -e $MOUNTPOINT ]; then
+		mkdir -p $MOUNTPOINT
+		chmod -R 755 $MOUNTPOINT
+		printScreen "Creata la directory ~/.fud/remotedir per il mount della directory remota."
+	fi
+
+	# Se il mount point è già montato, lo smonta
+	if ! cat /proc/mounts | grep $MOUNTPOINT &> /dev/null; then
+		umount -f $MOUNTPOINT &> /dev/null
 	fi
 	
 	# ---
