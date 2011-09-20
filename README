@@ -27,7 +27,7 @@ Files
 - fud (the script which will synchronize folders)
 - fudconf (user configuration script)
 - fud.sample-conf (just an example of configuration file)
-- install (root install script=
+- install (root install script)
 - LICENSE (GPL V.3 license file)
 - README (this file)
 
