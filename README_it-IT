@@ -17,9 +17,11 @@ Buon divertimento!
 L'ultima versione
 -----------------
 
-L'ultima versione di Fud può essere scaricata in formato zip o tar dalla pagina del progetto Fud (http://fudproject.dyndns.org).
-Può anche essere scaricata dal nostro repository Git (https://github.com/mirkop88/Fud/tree/master), sia per il ramo master, sia per gli altri rami di 
-sviluppo.
+L'ultima versione di Fud può essere scaricata in formato zip o tar dalla pagina 
+del progetto Fud (http://fudproject.dyndns.org).
+Può anche essere scaricata dal nostro repository Git 
+(https://github.com/mirkop88/Fud/tree/master), sia per il ramo master, sia per 
+gli altri rami di sviluppo.
 
 
 File
@@ -42,11 +44,17 @@ Come funziona Fud?
 Prima di tutto è necessario installare Fud. Puoi farlo utilizzando lo script 
 di installazione `install` lanciato con privilegi di root. 
 
-Terminata l'installazione, sarà sufficiente lanciare `fudconf`, che ti aiuterà a configurare Fud tramite domande interattive. Per la configurazione, si può fare riferimento al file di esempio fud.sample-conf.
+Terminata l'installazione, sarà sufficiente lanciare `fudconf`, che ti aiuterà 
+a configurare Fud tramite domande interattive. Per la configurazione, si può 
+fare riferimento al file di esempio fud.sample-conf.
 
-Quando Fud è configurato, è pronto per essere avviato. Durante la configurazione, ti verrà chiesto se desideri lanciare Fud all'avvio; altrimenti, puoi sempre lanciare Fud dal terminale.
+Quando Fud è configurato, è pronto per essere avviato. Durante la 
+configurazione, ti verrà chiesto se desideri lanciare Fud all'avvio; 
+altrimenti, puoi sempre lanciare Fud dal terminale.
 
-Per favore, guarda il file INSTALL - che contiene anche informazioni sulla configurazione di Fud - e la pagina del Wiki di Fud (https://github.com/mirkop88/Fud/wiki/Get,-install-and-run-Fud-(it)).
+Per favore, guarda il file INSTALL - che contiene anche informazioni sulla 
+configurazione di Fud - e la pagina del Wiki di Fud 
+(https://github.com/mirkop88/Fud/wiki/Get,-install-and-run-Fud-(it)).
 
 
 Licenza
@@ -58,5 +66,7 @@ GPL, version 3. Per favore, guarda il file LICENSE.
 Contatti
 --------
 
-Se vuoi partecipare attivamente allo sviluppo di Fud, contattaci dalla pagina del progetto (http://fudproject.dyndns.org). Oppure unisciti a noi su 
-https://github.com/mirkop88/Fud, clona con git ('git clone') il nostro repository e comincia a divertirti con il codice bash!
+Se vuoi partecipare attivamente allo sviluppo di Fud, contattaci dalla pagina 
+del progetto (http://fudproject.dyndns.org). Oppure unisciti a noi su 
+https://github.com/mirkop88/Fud, clona con git ('git clone') il nostro 
+repository e comincia a divertirti con il codice bash!
