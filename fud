@@ -3,7 +3,7 @@
 CONFIGFILE="$HOME/.fud/fud.conf"
 LOGFILE="$HOME/.fud/fud.log"
 ICON="/usr/share/app-install/icons/fud.png"
-MOUNTPOINT="/mnt/fud"
+MOUNTPOINT="$HOME/.fud/remotedir"
 
 #Colors
 RED="\e[1;31m" #Red
@@ -11,7 +11,7 @@ GREEN="\e[1;32m" #Green
 YELLOW="\e[1;33m" #Yellow
 RESET="\e[0m" #Reset!
 
-# NOTA DA RIMUOVERE: questa è una semplice funzione di stampa. Per ora non fa nulla di particolarmente straordinario, ma potrebbe essere utilizzata più in là per sopprimere agevolmente l'output nel terminale, se passata un'opzione come -silent
+# NOTA DA RIMUOVERE: questa è una semplice funzione di stampa. Per ora non fa nulla di particolarmente straordinario, ma potrebbe essere utilizzata più in là per sopprimere agevolmente l'output nel terminale, se passata un'opzione come -silent.
 # Print on screen
 printScreen() { echo -e "$@"; }
 
@@ -19,13 +19,13 @@ printScreen() { echo -e "$@"; }
 testStuff () {
 	# Check if mount point is avaible
 	if [[ ! -e $MOUNTPOINT ]]; then
-		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not available. Type \`mkdir -p $MOUNTPOINT\` as root first, then restart this script";
+		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not available. Type \`mkdir -p $MOUNTPOINT\` first, then restart this script";
 		exit 1
 	fi
 
 	# Check if mount point is writable
 	if [[ ! -w $MOUNTPOINT ]]; then
-		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not writable. Type \`chmod -R 777 $MOUNTPOINT\` as root first, then restart this script";
+		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not writable. Type \`chmod -R 755 $MOUNTPOINT\` first, then restart this script";
 		exit 1
 	fi
 	# Check if inotify is installed
@@ -53,13 +53,13 @@ testStuff () {
 	fi	
 }
 
-# Mount remote directory in /mnt/fud
+# Mount remote directory in $HOME/.fud/remotedir
 mountRemote() {
 	while :; do
-		# If /mnt/fud is already mounted, skip
+		# If $HOME/.fud/remotedir is already mounted, skip
 		if cat /proc/mounts | grep $MOUNTPOINT &> /dev/null; then
 			break;
-		# Else, if /mnt/fud is not already mounted
+		# Else, if $HOME/.fud/remotedir is not already mounted
 		else		
 			# Check for ssh connection
 			if [ "$METHOD" == "ssh" ]; then
@@ -93,6 +93,7 @@ mountRemote() {
 		fi
 	done
 }
+
 
 # Notify how many files have been synchronized
 notifySinc() {
@@ -128,7 +129,7 @@ if [[ -e $CONFIGFILE ]]; then
 	source $CONFIGFILE
 	# Perform test
 	testStuff
-
+	
 	# Mount remote directory and sync
 	while :; do
 		# Mount remote directory
