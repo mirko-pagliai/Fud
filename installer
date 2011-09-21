@@ -7,6 +7,7 @@ DEPENDENCIES=(curlftpfs inotify-tools libnotify-bin sshfs unison)
 #Colors
 RED="\e[1;31m" #Red
 GREEN="\e[1;32m" #Green
+YELLOW="\e[1;33m" #Yellow
 RESET="\e[0m" #Reset!
 
 # Print on screen
@@ -33,23 +34,44 @@ else
 	echo "user_allow_other" >> /etc/fuse.conf
 fi
 
-# Determina le dipendenze mancanti
+# What dependencies are missing?
 PKGSTOINSTALL=""
 for (( i=0; i<${tLen=${#DEPENDENCIES[@]}}; i++ )); do
-	if [[ ! `dpkg -l | grep -w "ii  ${DEPENDENCIES[$i]} "` ]]; then
+	# Debian, Ubuntu and derivatives (with dpkg)
+	if which dpkg &> /dev/null; then
+		if [[ ! `dpkg -l | grep -w "ii  ${DEPENDENCIES[$i]} "` ]]; then
 		PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
+		fi
+	# NOTA DA RIMUOVERE: qui andrebbero aggiunti vari elif per ogni distro
+	# If it's impossible to determine if there are missing dependencies, mark all as missing
+	else
+		PKGSTOINSTALL=${DEPENDENCIES[*]}
 	fi
 done
 
-# If some dependencies are missing, asks if he wants to install
+# If some dependencies are missing, asks if user wants to install
 if [ "$PKGSTOINSTALL" != "" ]; then
 	printScreen -n "Some dependencies are missing. Want to install them? (Y/n): "
 	read SURE
+	# If user wanna install missing dependencies
 	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then	
-		apt-get install $PKGSTOINSTALL
-		if [ $? -eq 0 ] ; then
-			printScreen "All dependencies are satisfied."
+		# Debian, Ubuntu and derivatives (with apt-get)
+		if which apt-get &> /dev/null; then
+			apt-get install $PKGSTOINSTALL
+			# If installation is successful
+			if [ $? -eq 0 ] ; then
+					printScreen "All dependencies are satisfied."
+			# Else, if installation isn't successful		
+			else
+				printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}"
+			fi
+		# NOTA DA RIMUOVERE: qui andrebbero aggiunti vari elif per ogni distro
+		else
+			printScreen $RED"ERROR:"$RESET": impossible to install missing dependencies. Please, install manually ${DEPENDENCIES[*]}"
 		fi
+	# Else, if user don't wanna install missing dependencies
+	else
+		printScreen $YELLOW"WARNING:"$RESET": Some dependencies may be missing. So, please, install manually ${DEPENDENCIES[*]}"
 	fi
 fi
 
