@@ -18,12 +18,12 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-# F is the directory where this script is located
+# $F is the directory where this script is located
 F=$(dirname $(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}"))
 # Copy executables files in /usr/local/bin and set execute permissions
 cp $F/fud $F/fudconf /usr/local/bin
 chmod +x /usr/local/bin/fud /usr/local/bin/fudconf
-# Conpy Fud icon in /usr/share/app-install/icons/
+# Copy Fud icon in /usr/share/app-install/icons/
 cp $F/fud.png /usr/share/app-install/icons/
 
 # Change, if necessary, /etc/fuse.conf file

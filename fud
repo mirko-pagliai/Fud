@@ -94,7 +94,7 @@ mountRemote() {
 	done
 }
 
- Notify how many files have been synchronized
+# Notify how many files have been synchronized
 notifySinc() {
 	# Check if at least one file has been synchronized
 	if [[ "$1" -ge "1" ]]; then
