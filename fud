@@ -128,7 +128,7 @@ if [[ -e $CONFIGFILE ]]; then
 	source $CONFIGFILE
 	# Perform test
 	testStuff
-
+	
 	# Mount remote directory and sync
 	while :; do
 		# Mount remote directory
