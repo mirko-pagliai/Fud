@@ -1,15 +1,15 @@
-# Connection method
+# Connection method (ssh, ftp or nfs)
 # NOTA DA RIMUOVERE: per ora è e sarà disponibile soltanto ssh. Ma questa variabile verrà comunque utilizzata per le verifiche del caso, semmai successivamente si volesse andare oltre ssh...
 METHOD="ftp"
 # Server for connection
 SERVER="ftp.yourhost.com"
-# Username for connection
+# Username for connection (only for ssh and ftp method)
 # NOTA DA RIMUOVERE: qui (o da qualche altra parte) andrebbe spiegato che prima di lanciare lo script, bisognerebbe sincerarsi che l'utente impostato abbia i permessi per lavorare sulla directory remota (successivamente indicata come RPATH) o comunque integrare nello script un controllo dei permessi sulla stessa
 LOGIN="username"
-# Password for connection
+# Password for connection (only for ssh and ftp method)
 # NOTA DA RIMUOVERE: qui (o da qualche altra parte) andrebbe correttamente spiegato che questa variabile può essere utilizzata per comodità, ma è che caldamente sconsigliata. Al contrario, sarebbe meglio lasciarla vuota e digitare manualmente la password o (ancora meglio) impostare l'autenticazione tramite chiave
 PASSWORD="password"
-# Porta for connection
+# Porta for connection (only for ssh and ftp method)
 PORT="21"
 # Local directory
 LPATH="/home/username/Backup"
