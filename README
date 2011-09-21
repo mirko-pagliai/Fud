@@ -19,39 +19,50 @@ The latest version
 ------------------
 
 The latest version of Fud can be downloaded as a zip or tar from the project 
-page Fud (http://fudproject.dyndns.org).
-It is also downloadable from our Git repository 
-(https://github.com/mirkop88/Fud/tree/master), for the master branch and for 
-other branches under development.
+page Fud:
+http://fudproject.dyndns.org
+It is also downloadable from our Git repository:
+https://github.com/mirkop88/Fud/tree/master
+Both for the master branch and for other branches of development.
 
 
 Files
 -----
 
-- fud (scripts for synchronization)
-- fudconf (user configuration script)
-- fud.sample-conf (an example of configuration file)
-- INSTALL (installation instructions in english language)
-- INSTALL_it-IT (installation instructions in italian language)
-- installer (root install script)
-- LICENSE (GPL V.3 license file)
-- README (this file in english language - just a readme file!)
-- README_it-IT (this file in italian language - just a readme file!)
+- fud 			scripts for synchronization
+- fudconf 		user configuration script
+- fud.png 		icon
+- fud.sample-conf 	an example of configuration file
+- fud.svg 		icon in vector format
+- install 		root install script
+- LICENSE 		GPL V.3 license file
+- README 		this file in english language - just a readme file!
+- README_it-IT 		this file in italian language - just a readme file!
 
 
 How does Fud works?
 -------------------
 
-First of all, you need install Fud . You can do this using the `install` 
-script launched with root privileges. 
-After installation, just run 'fudconf', which will help you to configure Fud 
-through interactive questions. For configuration, you can refer to the sample 
-file fud.sample-conf.
-When Fud is configured, it's ready to start. During configuration, you can set 
-to launch Fud at startup. Otherwise, you can always run Fud from your terminal.
-Please see the INSTALL file - which also contains information on configuring 
-Fud - and the Wiki page of Fud 
-(https://github.com/mirkop88/Fud/wiki/Get,-install-and-run-Fud).
+First of all, you need install Fud. Just run the installer script with root
+privileges:
+$ su -c "./Fud/install"
+Or:
+$ su
+[password]
+# ./Fud/install
+
+To configure Fud, simply run fudconf:
+$ fudconf
+Fudconf will help you to configure Fud through interactive questions. For the
+configuration, you can refer to the sample file fud.sample-conf.
+
+When Fud is finally configured, it's ready to run. During the
+configuration, will be asked if you want to launch Fud at startup;
+in any case, you can launch Fud from the terminal:
+$ fud
+
+For more information, see the Fud Wiki page:
+https://github.com/mirkop88/Fud/wiki/Get,-install-and-run-Fud
 
 
 Licensing

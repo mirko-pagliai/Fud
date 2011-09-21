@@ -7,9 +7,9 @@ Cos'è?
 Fud sta per "Fuck U D..." (indovinate un po' per cosa sta la D?).
 È stato scritto ed è attivamente sviluppo per offrire un'alternativa libera e
 open-source al software proprietaro già esistente, come Dropbox, Box.net, ecc.
-Gli utenti possono fare il backup e/o sincronizzare cartelle e file locali 
+Gli utenti possono fare il backup e/o sincronizzare cartelle e file locali
 tramite un server locale o remoto e grazie a ssh, ftp o altri protocolli.
-L'unica cosa di cui si ha bisogno è un server o uno spazio online con accesso 
+L'unica cosa di cui si ha bisogno è un server o uno spazio online con accesso
 ssh o ftp, anche su un dominio o un host condiviso.
 Buon divertimento!
 
@@ -17,44 +17,51 @@ Buon divertimento!
 L'ultima versione
 -----------------
 
-L'ultima versione di Fud può essere scaricata in formato zip o tar dalla pagina 
-del progetto Fud (http://fudproject.dyndns.org).
-Può anche essere scaricata dal nostro repository Git 
-(https://github.com/mirkop88/Fud/tree/master), sia per il ramo master, sia per 
-gli altri rami di sviluppo.
+L'ultima versione di Fud può essere scaricata in formato zip o tar dalla pagina
+del progetto Fud:
+http://fudproject.dyndns.org
+Può anche essere scaricata dal nostro repository Git:
+https://github.com/mirkop88/Fud/tree/master
+Sia per il ramo master, sia per gli altri rami di sviluppo.
 
 
 File
 ----
 
-- fud (script di sincronizzazione)
-- fudconf (script di configurazione utente)
-- fud.sample-conf (un esempio di file di configurazione)
-- INSTALL (istruzioni per l'installazione in lingua inglese)
-- INSTALL_it-IT (istruzioni per l'installazione in lingua italiana)
-- installer (script di installazione per l'utente root)
-- LICENSE (licenza GPL V.3)
-- README (questo file in lingua inglese - un file "readme")
-- README_it_IT (questo file in lingua italiana - un file "readme")
+- fud			script di sincronizzazione
+- fudconf		script di configurazione utente
+- fud.png		icona di Fud
+- fud.svg		icona di Fud in formato vettoriale
+- fud.sample-conf	un esempio di file di configurazione
+- install 		script di installazione per l'utente root
+- LICENSE 		licenza GPL V.3
+- README 		questo file in lingua inglese - un file "readme"
+- README_it_IT		questo file in lingua italiana - un file "readme"
 
 
 Come funziona Fud?
 ------------------
 
-Prima di tutto è necessario installare Fud. Puoi farlo utilizzando lo script 
-di installazione `install` lanciato con privilegi di root. 
+Prima di tutto è necessario installare Fud. È sufficiente lanciare lo script
+di installazione con i privilegi di root:
+$ su -c "./Fud/install"
+Oppure:
+$ su
+[password]
+# ./Fud/install
 
-Terminata l'installazione, sarà sufficiente lanciare `fudconf`, che ti aiuterà 
-a configurare Fud tramite domande interattive. Per la configurazione, si può 
-fare riferimento al file di esempio fud.sample-conf.
+Per configurare Fud è sufficiente eseguire fudconf:
+$ fudconf
+Fudconf aiuterà a configurare Fud tramite domande interattive. Per la
+configurazione si può fare riferimento al file di esempio fud.sample-conf.
 
-Quando Fud è configurato, è pronto per essere avviato. Durante la 
-configurazione, ti verrà chiesto se desideri lanciare Fud all'avvio; 
-altrimenti, puoi sempre lanciare Fud dal terminale.
+Quando Fud è configurato, è pronto per essere avviato. Durante la
+configurazione, verrà chiesto se si desidera lanciare Fud all'avvio;
+in ogni caso, è possibile lanciare Fud dal terminale:
+$ fud
 
-Per favore, guarda il file INSTALL - che contiene anche informazioni sulla 
-configurazione di Fud - e la pagina del Wiki di Fud 
-(https://github.com/mirkop88/Fud/wiki/Get,-install-and-run-Fud-(it)).
+Per altre informazioni, guarda la pagina del Wiki di Fud:
+https://github.com/mirkop88/Fud/wiki/Get,-install-and-run-Fud-(it)
 
 
 Licenza
@@ -66,7 +73,7 @@ GPL, version 3. Per favore, guarda il file LICENSE.
 Contatti
 --------
 
-Se vuoi partecipare attivamente allo sviluppo di Fud, contattaci dalla pagina 
-del progetto (http://fudproject.dyndns.org). Oppure unisciti a noi su 
-https://github.com/mirkop88/Fud, clona con git ('git clone') il nostro 
+Se vuoi partecipare attivamente allo sviluppo di Fud, contattaci dalla pagina
+del progetto (http://fudproject.dyndns.org). Oppure unisciti a noi su
+https://github.com/mirkop88/Fud, clona con git ('git clone') il nostro
 repository e comincia a divertirti con il codice bash!
