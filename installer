@@ -15,7 +15,7 @@ printScreen() { echo -e "$@"; }
 
 # Check if user is root
 if [[ $EUID -ne 0 ]]; then
-   printScreen $RED"Error:"$RESET" this script must be run as root"
+   printScreen $RED"Error:"$RESET" this script must be run as root."
    exit 1
 fi
 
@@ -63,15 +63,15 @@ if [ "$PKGSTOINSTALL" != "" ]; then
 					printScreen "All dependencies are satisfied."
 			# Else, if installation isn't successful		
 			else
-				printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}"
+				printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
 			fi
 		# NOTA DA RIMUOVERE: qui andrebbero aggiunti vari elif per ogni distro
 		else
-			printScreen $RED"ERROR:"$RESET": impossible to install missing dependencies. Please, install manually ${DEPENDENCIES[*]}"
+			printScreen $RED"ERROR:"$RESET": impossible to install missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
 		fi
 	# Else, if user don't wanna install missing dependencies
 	else
-		printScreen $YELLOW"WARNING:"$RESET": Some dependencies may be missing. So, please, install manually ${DEPENDENCIES[*]}"
+		printScreen $YELLOW"WARNING:"$RESET": Some dependencies may be missing. So, please, install manually ${DEPENDENCIES[*]}."
 	fi
 fi
 

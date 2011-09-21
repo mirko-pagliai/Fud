@@ -25,7 +25,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	# Create $FUDDIR, if doesn't exists, and set permissions
 	if [ ! -e $FUDDIR ]; then
 		mkdir -p $FUDDIR &> /dev/null
-		printScreen "Create directory $FUDDIR"
+		printScreen "Create directory $FUDDIR."
 	fi
 	chmod -R 755 $FUDDIR &> /dev/null
 	# If $MOUNTPOINT is already mounted, unmount it
@@ -63,7 +63,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 			break
 		# If has not been selected a supported method
 		else
-			printScreen ${RED}"Error"${RESET}": choose a method listed"
+			printScreen ${RED}"Error"${RESET}": choose a method listed."
 			printScreen
 			# Continue loop			
 			continue
@@ -85,7 +85,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 			break
 		# If a server has not been correctly entered
 		else
-			printScreen ${RED}"Errore"${RESET}": specify a server for connection (server name or ip address)"
+			printScreen ${RED}"Errore"${RESET}": specify a server for connection (server name or ip address)."
 			printScreen
 			# Continue loop
 			continue
@@ -107,7 +107,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 			break
 		# If a user has not been correctly entered
 		else
-			printScreen ${RED}"Errore"${RESET}": specify a user for connection"
+			printScreen ${RED}"Errore"${RESET}": specify a user for connection."
 			printScreen
 			# Continue loop
 			continue
@@ -214,7 +214,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 
 	# End
 	printScreen $GREEN"Success"$RESET": Fud has been properly configured and it's now ready for use. Good sync!"
-	printScreen "Note: if you just added your user to fuse group, you need to logout and login before using Fud"
+	printScreen "Note: if you just added your user to fuse group, you need to logout and login before using Fud."
 	exit 0;
 
 # If user has decided to don't configure Fud, leave
