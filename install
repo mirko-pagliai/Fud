@@ -40,7 +40,7 @@ for (( i=0; i<${tLen=${#DEPENDENCIES[@]}}; i++ )); do
 	# Debian, Ubuntu and derivatives (with dpkg)
 	if which dpkg &> /dev/null; then
 		if [[ ! `dpkg -l | grep -w "ii  ${DEPENDENCIES[$i]} "` ]]; then
-		PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
+			PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
 		fi
 	# NOTA DA RIMUOVERE: qui andrebbero aggiunti vari elif per ogni distro
 	# If it's impossible to determine if there are missing dependencies, mark all as missing
