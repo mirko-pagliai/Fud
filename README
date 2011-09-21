@@ -4,64 +4,52 @@ FUD
 What is it?
 -----------
 
-FUD stands for Fuck U D... (guess what D means?).
-It was written and it is actively developed in order to offer a free software 
-alternative to proprietary software just like Dropbox, Box.Net, etc.
-Users will be able to backup and/or to sync local folders and files to remote 
-one via ssh, ftp or other protocols.
-The only thing needed is a ssh or ftp access on a server, even on a shared 
+FUD stands for "Fuck U D..." (guess what D means?).
+It was written and it is actively developed in order to offer a free and open-source 
+alternative to existing proprietary software just like Dropbox, Box.Net, etc.
+Users will be able to backup and/or to synchronize local folders and files through a local or remote server, with ssh, ftp or other protocols.
+The only thing needed is a server or an online space with ssh or ftp access, even on a domain or a shared 
 host.
 Enjoy!
 
 
-The Latest Version
+The latest version
 ------------------
 
-Details of the latest version can be found on the FUD project page under 
-https://github.com/mirkop88/Fud/wiki, on the master branch.
+The latest version of FUD can be downloaded as a zip or tar from the project page Fud (http://fudproject.dyndns.org).
+It is also downloadable from our Git repository (https://github.com/mirkop88/Fud/tree/master), for the master branch and for other branches under development.
 
 
 Files
 -----
 
-- fud (the script which will synchronize folders)
+- fud (scripts for synchronization)
 - fudconf (user configuration script)
-- fud.sample-conf (just an example of configuration file)
-- INSTALL (installation instructions)
+- fud.sample-conf (an example of configuration file)
+- INSTALL (installation instructions in english language)
+- INSTALL_it-IT (installation instructions in italian language)
 - installer (root install script)
 - LICENSE (GPL V.3 license file)
-- README (this file - just a readme file)
+- README (this file in english language - just a readme file!)
+- README_it-IT (this file in italian language - just a readme file!)
 
 
 How does FUD works?
 ------------
 
-First of all installation is needed:
-$ cd Fud
-$ su -
-passworder
-# ./install
-# exit
-
-Then some configuration:
-$ fudconf
-
-Finally, just run it:
-$ fud
-
-That's all.
-
+First of all, you need install Fud . You can do this using the `install` script launched with root privileges. 
+After installation, just run 'fudconf', which will help you to configure Fud through interactive questions. For configuration, you can refer to the sample file fud.sample-conf.
+When Fud is configured, it's ready to start. During configuration, you can set to launch Fud at startup. Otherwise, you can always run Fud from your terminal.
+Please see the INSTALL file - which also contains information on configuring Fud - and the Wiki page of Fud (https://github.com/mirkop88/Fud/wiki/Get,-install-and-run-Fud).
 
 Licensing
 ---------
 
-Please see the file called LICENSE.
+GPL, version 3. Please, see the LICENSE file.
 
 
 
 Contacts
 --------
 
-If you want to participate in actively developing FUD just join us to 
-https://github.com/mirkop88/Fud/wiki, git clone the master or trunk branch and 
-have fun whith the code!
+If you want to participate actively in the development of Fud, contact us from the project page (http://fudproject.dyndns.org). Or join us on https://github.com/mirkop88/Fud, clones with git (`git clone`) our repository and start having fun with the bash code!
