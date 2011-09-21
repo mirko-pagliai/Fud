@@ -5,16 +5,20 @@ What is it?
 -----------
 
 FUD stands for Fuck U D... (guess what D means?).
-It was written and it is actively developed in order to offer a free software alternative to proprietary software just like Dropbox, Box.Net, etc.
-Users will be able to backup and/or to sync local folders and files to remote one via ssh, ftp or other protocols.
-The only thing needed is a ssh or ftp access on a server, even on a shared host.
+It was written and it is actively developed in order to offer a free software 
+alternative to proprietary software just like Dropbox, Box.Net, etc.
+Users will be able to backup and/or to sync local folders and files to remote 
+one via ssh, ftp or other protocols.
+The only thing needed is a ssh or ftp access on a server, even on a shared 
+host.
 Enjoy!
 
 
 The Latest Version
 ------------------
 
-Details of the latest version can be found on the FUD project page under https://github.com/mirkop88/Fud/wiki, on the master branch.
+Details of the latest version can be found on the FUD project page under 
+https://github.com/mirkop88/Fud/wiki, on the master branch.
 
 
 Files
@@ -58,4 +62,6 @@ Please see the file called LICENSE.
 Contacts
 --------
 
- o If you want to participate in actively developing FUD just join us to https://github.com/mirkop88/Fud/wiki, git clone the master or trunk branch and have fun whith the code!
+If you want to participate in actively developing FUD just join us to 
+https://github.com/mirkop88/Fud/wiki, git clone the master or trunk branch and 
+have fun whith the code!
