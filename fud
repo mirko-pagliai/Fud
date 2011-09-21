@@ -94,8 +94,7 @@ mountRemote() {
 	done
 }
 
-
-# Notify how many files have been synchronized
+ Notify how many files have been synchronized
 notifySinc() {
 	# Check if at least one file has been synchronized
 	if [[ "$1" -ge "1" ]]; then
@@ -129,7 +128,7 @@ if [[ -e $CONFIGFILE ]]; then
 	source $CONFIGFILE
 	# Perform test
 	testStuff
-	
+
 	# Mount remote directory and sync
 	while :; do
 		# Mount remote directory
