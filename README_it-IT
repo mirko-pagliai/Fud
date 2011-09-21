@@ -2,9 +2,9 @@ FUD
 
 
 Cos'è?
------------
+------
 
-FUD sta per "Fuck U D..." (indovinate un po' per cosa sta la D?).
+Fud sta per "Fuck U D..." (indovinate un po' per cosa sta la D?).
 È stato scritto ed è attivamente sviluppo per offrire un'alternativa libera e
 open-source al software proprietaro già esistente, come Dropbox, Box.net, ecc.
 Gli utenti possono fare il backup e/o sincronizzare cartelle e file locali 
@@ -15,15 +15,15 @@ Buon divertimento!
 
 
 L'ultima versione
-------------------
+-----------------
 
-L'ultima versione di FUD può essere scaricata in formato zip o tar dalla pagina del progetto Fud (http://fudproject.dyndns.org).
+L'ultima versione di Fud può essere scaricata in formato zip o tar dalla pagina del progetto Fud (http://fudproject.dyndns.org).
 Può anche essere scaricata dal nostro repository Git (https://github.com/mirkop88/Fud/tree/master), sia per il ramo master, sia per gli altri rami di 
 sviluppo.
 
 
 File
------
+----
 
 - fud (script di sincronizzazione)
 - fudconf (script di configurazione utente)
@@ -36,8 +36,9 @@ File
 - README_it_IT (questo file in lingua italiana - un file "readme")
 
 
-Come funziona FUD?
-------------
+Come funziona Fud?
+------------------
+
 Prima di tutto è necessario installare Fud. Puoi farlo utilizzando lo script 
 di installazione `install` lanciato con privilegi di root. 
 
@@ -49,10 +50,9 @@ Per favore, guarda il file INSTALL - che contiene anche informazioni sulla confi
 
 
 Licenza
----------
+-------
 
 GPL, version 3. Per favore, guarda il file LICENSE.
-
 
 
 Contatti

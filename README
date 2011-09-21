@@ -4,7 +4,7 @@ FUD
 What is it?
 -----------
 
-FUD stands for "Fuck U D..." (guess what D means?).
+Fud stands for "Fuck U D..." (guess what D means?).
 It was written and it is actively developed in order to offer a free and open-source 
 alternative to existing proprietary software just like Dropbox, Box.Net, etc.
 Users will be able to backup and/or to synchronize local folders and files through a local or remote server, with ssh, ftp or other protocols.
@@ -16,7 +16,7 @@ Enjoy!
 The latest version
 ------------------
 
-The latest version of FUD can be downloaded as a zip or tar from the project page Fud (http://fudproject.dyndns.org).
+The latest version of Fud can be downloaded as a zip or tar from the project page Fud (http://fudproject.dyndns.org).
 It is also downloadable from our Git repository (https://github.com/mirkop88/Fud/tree/master), for the master branch and for other branches under development.
 
 
@@ -34,19 +34,19 @@ Files
 - README_it-IT (this file in italian language - just a readme file!)
 
 
-How does FUD works?
-------------
+How does Fud works?
+-------------------
 
 First of all, you need install Fud . You can do this using the `install` script launched with root privileges. 
 After installation, just run 'fudconf', which will help you to configure Fud through interactive questions. For configuration, you can refer to the sample file fud.sample-conf.
 When Fud is configured, it's ready to start. During configuration, you can set to launch Fud at startup. Otherwise, you can always run Fud from your terminal.
 Please see the INSTALL file - which also contains information on configuring Fud - and the Wiki page of Fud (https://github.com/mirkop88/Fud/wiki/Get,-install-and-run-Fud).
 
+
 Licensing
 ---------
 
 GPL, version 3. Please, see the LICENSE file.
-
 
 
 Contacts
