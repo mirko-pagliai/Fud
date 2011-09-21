@@ -17,13 +17,13 @@ printScreen() { echo -e "$@"; }
 
 # Test if software installation and server connection are ok
 testStuff () {
-	# Check if mount point is avaible
+	# Check if $MOUNTPOINT is avaible
 	if [[ ! -e $MOUNTPOINT ]]; then
 		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not available. Type \`mkdir -p $MOUNTPOINT\` first, then restart this script";
 		exit 1
 	fi
 
-	# Check if mount point is writable
+	# Check if $MOUNTPOINT is writable
 	if [[ ! -w $MOUNTPOINT ]]; then
 		printScreen $RED"Error: "$RESET"mount point $MOUNTPOINT is not writable. Type \`chmod -R 755 $MOUNTPOINT\` first, then restart this script";
 		exit 1
@@ -53,13 +53,13 @@ testStuff () {
 	fi	
 }
 
-# Mount remote directory in $HOME/.fud/remotedir
+# Mount remote directory in $MOUNTPOINT
 mountRemote() {
 	while :; do
-		# If $HOME/.fud/remotedir is already mounted, skip
+		# If $MOUNTPOINT is already mounted, skip
 		if cat /proc/mounts | grep $MOUNTPOINT &> /dev/null; then
 			break;
-		# Else, if $HOME/.fud/remotedir is not already mounted
+		# Else, if $MOUNTPOINT is not already mounted
 		else		
 			# Check for ssh connection
 			if [ "$METHOD" == "ssh" ]; then

@@ -22,28 +22,23 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	# ---
 	# PRELIMINARY ACTIONS
 	# ---
-	# Create Fud directory Fud, if doesn't exists
+	# Create $FUDDIR, if doesn't exists, and set permissions
 	if [ ! -e $FUDDIR ]; then
 		mkdir -p $FUDDIR &> /dev/null
 		printScreen "Create directory $FUDDIR"
 	fi
-<<<<<<< HEAD
-	# Set Fud directory permissions
-	chmod -R 755 $FUDDIR
-=======
-
-	# Crea il mount point, se non già esistente
-	if [ ! -e $MOUNTPOINT ]; then
-		mkdir -p $MOUNTPOINT
-		chmod -R 755 $MOUNTPOINT
-		printScreen "Creata la directory ~/.fud/remotedir per il mount della directory remota."
-	fi
-
-	# Se il mount point è già montato, lo smonta
+	chmod -R 755 $FUDDIR &> /dev/null
+	# If $MOUNTPOINT is already mounted, unmount it
 	if ! cat /proc/mounts | grep $MOUNTPOINT &> /dev/null; then
+		# NOTA DA RIMUOVERE: siamo sicuri che riesca a smontarlo, visto che questo script è lanciato da un utente normale?
 		umount -f $MOUNTPOINT &> /dev/null
 	fi
->>>>>>> pmmate/bugfixes
+	# Create $MOUNTPOINT, if doesn't exists and set permissions
+	if [ ! -e $MOUNTPOINT ]; then
+		mkdir -p $MOUNTPOINT &> /dev/null
+		printScreen "Created $MOUNTPOINT for mounting the remote directory."
+	fi
+	chmod -R 755 $MOUNTPOINT &> /dev/null
 	
 	# ---
 	# CONNECTION METHOD
