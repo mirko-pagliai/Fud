@@ -1,0 +1,58 @@
+FUD
+
+
+Cos'è?
+-----------
+
+FUD sta per "Fuck U D"... (indovinate un po' per cosa sta la D?).
+È stato scritto ed è attivamente sviluppo per offrire un'alternativa libera al software proprietaro già esistente, come Dropbox, Box.net, ecc.
+Gli utenti possono fare il backup e/o sincronizzare cartelle e file locali tramite un server locale o remoto e grazie a ssh, ftp o altri protocolli (a breve: nfs and samba).
+L'unica cosa di cui si ha bisogno è un server o uno spazio online con accesso ssh o ftp, anche su un dominio o un host condiviso.
+Buon divertimento!
+
+
+L'ultima versione
+------------------
+
+L'ultima versione di FUD può essere scaricata da http://docs.mirkopagliai.it/fud.
+È anche scaricabile utilizzanto Git dal repository GitHub https://github.com/mirkop88/Fud/tree/master, insieme alle versioni in fase di sviluppo.
+Dettagli sull'ultima versione possono essere reperiti alla pagina del progetto FUD, all'indirizzo https://github.com/mirkop88/Fud/wiki, sotto il ramo principale del progetto (master).
+
+
+File
+-----
+
+- fud (script di sincronizzazione)
+- fudconf (script di configurazione utente)
+- fud.sample-conf (un esempio di file di configurazione)
+- INSTALL (istruzioni per l'installazione)
+- installer (script di installazione per l'utente root)
+- LICENSE (licenza GPL V.3)
+- README_en-US (questo file - un file "readme" - in lingua inglese)
+- README_it_IT (questo file - un file "readme" - in lingua inglese)
+
+
+Come funziona FUD?
+------------
+Prima di tutto, è necessario installare FUD. Puoi farlo utilizzando lo script di installazione 'install'. Per favore, guarda il file INSTALL.
+
+Terminata l'installazione, puoi configurare FUD con:
+$ fudconf
+
+Infine, FUD può essere lanciato per la sincronizzazione:
+$ fud
+
+È tutto.
+
+
+Licenza
+---------
+
+Per favore, guarda il file LICENSE.
+
+
+
+Contatti
+--------
+
+Se vuoi partecipare attivamente allo sviluppo di Fud, unisciti a noi su https://github.com/mirkop88/Fud, clona con git ('git clone') il ramo 'master' o 'trunk' e comincia a divertirti con il codice!
