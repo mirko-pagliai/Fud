@@ -42,7 +42,7 @@ for (( i=0; i<${tLen=${#DEPENDENCIES[@]}}; i++ )); do
 		if [[ ! `dpkg -l | grep -w "ii  ${DEPENDENCIES[$i]} "` ]]; then
 			PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
 		fi
-	# OpenSuse, Mandriva, ecc. (with rpm)
+	# OpenSuse, Mandriva, Fedora, CentOs, ecc. (with rpm)
 	elif which rpm &> /dev/null; then
 		if [[ ! `rpm -q ${DEPENDENCIES[$i]}` ]]; then
 			PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
@@ -68,6 +68,9 @@ if [ "$PKGSTOINSTALL" != "" ]; then
 		# Mandriva (with urpmi)
 		elif which urpmi &> /dev/null; then
 			urpmi $PKGSTOINSTALL
+		# Fedora and CentOS (with yum)
+		elif which yum &> /dev/null; then
+			yum install $PKGSTOINSTALL
 		# Else, if no package manager has been founded
 		else
 			# Set $NOPKGMANAGER
