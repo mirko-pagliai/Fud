@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#Colors
+RED="\e[1;31m" #Red
+GREEN="\e[1;32m" #Green
+YELLOW="\e[1;33m" #Yellow
+RESET="\e[0m" #Reset!
+
+# Print on screen
+printScreen() { echo -e "$@"; }
+
+# Check if user is root
+if [[ $EUID -ne 0 ]]; then
+   printScreen $RED"Error:"$RESET" this script must be run as root."
+   exit 1
+fi
+
+# Remove executables files from /usr/local/bin
+rm -f /usr/local/bin/fud /usr/local/bin/fudconf
+# Remove Fud icon from /usr/share/app-install/icons/
+rm -f /usr/share/app-install/icons/fud.png
+
+# Change, if necessary, /etc/fuse.conf file
+if grep "user_allow_other" /etc/fuse.conf &> /dev/null; then
+	sed -i "s/user_allow_other/#user_allow_other/g" /etc/fuse.conf
+fi
+
+printScreen $GREEN"Success"$RESET": Fud has been properly uninstalled."
+
+exit 0
