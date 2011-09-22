@@ -42,7 +42,11 @@ for (( i=0; i<${tLen=${#DEPENDENCIES[@]}}; i++ )); do
 		if [[ ! `dpkg -l | grep -w "ii  ${DEPENDENCIES[$i]} "` ]]; then
 			PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
 		fi
-	# NOTA DA RIMUOVERE: qui andrebbero aggiunti vari elif per ogni distro
+	# OpenSuse, Mandriva, ecc. (with rpm)
+	elif which rpm &> /dev/null; then
+		if [[ ! `rpm -q ${DEPENDENCIES[$i]}` ]]; then
+			PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
+		fi
 	# If it's impossible to determine if there are missing dependencies, mark all as missing
 	else
 		PKGSTOINSTALL=${DEPENDENCIES[*]}
@@ -65,7 +69,26 @@ if [ "$PKGSTOINSTALL" != "" ]; then
 			else
 				printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
 			fi
-		# NOTA DA RIMUOVERE: qui andrebbero aggiunti vari elif per ogni distro
+		# OpenSuse (with zypper)
+		elif which zypper &> /dev/null; then
+			zypper in $PKGSTOINSTALL
+			# If installation is successful
+			if [ $? -eq 0 ] ; then
+					printScreen "All dependencies are satisfied."
+			# Else, if installation isn't successful		
+			else
+				printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
+			fi
+		# Mandriva (with urpmi)
+		elif which urpmi &> /dev/null; then
+			urpmi $PKGSTOINSTALL
+			# If installation is successful
+			if [ $? -eq 0 ] ; then
+					printScreen "All dependencies are satisfied."
+			# Else, if installation isn't successful		
+			else
+				printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
+			fi
 		else
 			printScreen $RED"ERROR:"$RESET": impossible to install missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
 		fi
