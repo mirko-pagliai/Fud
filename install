@@ -63,10 +63,12 @@ if [ "$PKGSTOINSTALL" != "" ]; then
 			# Else, if installation isn't successful		
 			else
 				printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
+				exit 1
 			fi
 		# NOTA DA RIMUOVERE: qui andrebbero aggiunti vari elif per ogni distro
 		else
 			printScreen $RED"ERROR:"$RESET": impossible to install missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
+			exit 1
 		fi
 	# Else, if user don't wanna install missing dependencies
 	else
