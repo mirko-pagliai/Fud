@@ -62,35 +62,24 @@ if [ "$PKGSTOINSTALL" != "" ]; then
 		# Debian, Ubuntu and derivatives (with apt-get)
 		if which apt-get &> /dev/null; then
 			apt-get install $PKGSTOINSTALL
-			# If installation is successful
-			if [ $? -eq 0 ] ; then
-					printScreen "All dependencies are satisfied."
-			# Else, if installation isn't successful		
-			else
-				printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
-			fi
 		# OpenSuse (with zypper)
 		elif which zypper &> /dev/null; then
 			zypper in $PKGSTOINSTALL
-			# If installation is successful
-			if [ $? -eq 0 ] ; then
-					printScreen "All dependencies are satisfied."
-			# Else, if installation isn't successful		
-			else
-				printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
-			fi
 		# Mandriva (with urpmi)
 		elif which urpmi &> /dev/null; then
 			urpmi $PKGSTOINSTALL
-			# If installation is successful
-			if [ $? -eq 0 ] ; then
-					printScreen "All dependencies are satisfied."
-			# Else, if installation isn't successful		
-			else
-				printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
-			fi
+		# Else, if no package manager has been founded
 		else
-			printScreen $RED"ERROR:"$RESET": impossible to install missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
+			# Set $NOPKGMANAGER
+			NOPKGMANAGER=TRUE
+			printScreen $RED"ERROR:"$RESET": impossible to found a package manager in your sistem. Please, install manually ${DEPENDENCIES[*]}."
+		fi
+		# Check if installation is successful
+		if [[ $? -eq 0 && ! -z $NOPKGMANAGER ]] ; then
+			printScreen "All dependencies are satisfied."
+		# Else, if installation isn't successful		
+		else
+			printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
 		fi
 	# Else, if user don't wanna install missing dependencies
 	else
