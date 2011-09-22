@@ -7,53 +7,64 @@
 		   body {
 				background-color:#fff;
 				color:#000;
-				font-family:Helvetica, Arial, FreeSans, san-serif;
+				font-family:"DejaVu Sans",Verdana,Helvetica, Arial, FreeSans, san-serif;
+				font-size: 76%;
 				margin-top:1em;
 				text-align:justify;
 			}
+			#header {
+				background:#2E77D2;
+    			border-radius: 1em;
+    			padding:1em .5em 1em 1.5em;
+    			margin-bottom:1.5em;
+    		}
+    		#header h1 {
+    			margin:0;
+    		}
 			#container {
 				margin:0 auto;
 				width:700px;
 			}
 			h1 { 
 				color:#2E77D2; 
-				font-size:3.8em; 
+				font-size:3em; 
 				margin-bottom:0; 
 			}
 			h1 .small { 
 				font-size:.4em; 
 			}
 			h1 a { 
+				color:#FFF;
 				text-decoration:none;
 			}
 			h2 { 
-				color: #2E77D2; 
-				font-size: 1.5em; 
-				margin: .8em 0 .4em;
+				color:#2E77D2; 
+				font-size:1.5em; 
+				margin:.6em 0 .3em;
 			}
 			h3 { 
 				color: #2E77D2; 
 				text-align: center; 
 			}
 			a { 
-				color: #2E77D2; 
+				color:#2E77D2; 
 			}
-			p {
-				margin-bottom:0;
+			p, pre {
+				margin:0 0 .5em;
 			}
 			.description { 
-				color: #2E77D2; 
-				font-size: 1.2em; 
-				font-style: italic;
-				font-weight: bold; 
-				margin:0 0 2em 1.5em; 
+				color: #FFF;
+				font-size:1.5em;
+				font-weight:bold; 
+				margin-left:1.5em; 
 			}
 			.download { 
 				float:right; 
 			}
 			pre { 
-    			background:#000;
+    			background:#222;
     			color:#FFF;
+    			font-size:1.2em;
     			padding:.5em 1em;
 			}
 			hr { 
@@ -62,6 +73,7 @@
 				width:80%; 
 			}
 			.footer { 
+				font-size:.9em;
 				padding-top:1em; 
 				font-style: italic; 
 				text-align:center; 
@@ -74,19 +86,22 @@
 
 		<div id="container">
 
-			<div class="download">
-				<a href="http://github.com/mirkop88/Fud/zipball/master">
-					<img border="0" width="90" src="http://github.com/images/modules/download/zip.png">
-				</a>
-	     			<a href="http://github.com/mirkop88/Fud/tarball/master">
-					<img border="0" width="90" src="http://github.com/images/modules/download/tar.png">
-				</a>
-	    		</div>
-
-	    		<h1><a href="http://github.com/mirkop88/Fud">the FUD project</a></h1>
-
-	    		<div class="description">— Fuck you Dropbox!</div>
-	    		<p>
+			<div id="header">
+				<div class="download">
+					<a href="http://github.com/mirkop88/Fud/zipball/master">
+						<img border="0" width="70" src="http://github.com/images/modules/download/zip.png">
+					</a>
+		     			<a href="http://github.com/mirkop88/Fud/tarball/master">
+						<img border="0" width="70" src="http://github.com/images/modules/download/tar.png">
+					</a>
+		    	</div>
+	
+		    	<h1><a href="http://github.com/mirkop88/Fud">the FUD project</a></h1>
+	
+		    	<div class="description">— Fuck you Dropbox!</div>
+		  </div>  	
+		    	
+	    	<p>
 				FUD stands for Fuck U D... (guess what D means?).
 				It was written and it is actively developed in order to offer a free software alternative to 				proprietary software just like Dropbox, Box.Net, etc.
 				Users will be able to backup and/or to sync local folders and files to remote one via ssh, ftp 				or others protocols.
@@ -101,31 +116,26 @@
 			<p>Please, see the LICENSE file.</p>
 
 			<h2>Authors</h2>
-			<p>
-				Mirko Pagliai (mirko[dot]pagliai[at]gmail[dot]com)<br />
-				pmate (pmate[at]gnurant[dot]org)
-			</p>
+			<p>Mirko Pagliai (<em>mirko[dot]pagliai[at]gmail[dot]com</em>)</p>
+			<p>pmate (<em>pmate[at]gnurant[dot]org</em>)</p>
+			
 
-			<h2>Contact</h2>
-			<p>Mirko Pagliai (mirko[dot]pagliai[at]gmail[dot]com)</p>
-
-	    		<h2>Download</h2>
-	    		<p>
+	    	<h2>Download</h2>
+	    	<p>
 				You can download this project in either
 				<a href="http://github.com/mirkop88/Fud/zipball/master">zip</a> or
 				<a href="http://github.com/mirkop88/Fud/tarball/master">tar</a> formats.
-	   		</p>
-	    		<p>
+	   	</p>
+	    	<p>
 				You can also clone the project with <a href="http://git-scm.com">Git</a>
-	      			by running:
-	      			<pre>$ git clone git://github.com/mirkop88/Fud</pre>
-	    		</p>
+	      		by running:
+	      		<pre>$ git clone git://github.com/mirkop88/Fud</pre>
+	    	</p>
 
-	    		<div class="footer">
+	    	<div class="footer">
 				get the source code on GitHub : 
 				<a href="http://github.com/mirkop88/Fud">mirkop88Fud</a>
-	    		</div>
-
+	    	</div>
 	  	</div>
 	</body>
 </html>
