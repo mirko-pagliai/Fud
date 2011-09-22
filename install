@@ -45,7 +45,7 @@ for (( i=0; i<${tLen=${#DEPENDENCIES[@]}}; i++ )); do
 	# NOTA DA RIMUOVERE: qui andrebbero aggiunti vari elif per ogni distro
 	# If it's impossible to determine if there are missing dependencies, mark all as missing
 	else
-		PKGSTOINSTALL=${DEPENDENCIES[*]}
+		PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
 	fi
 done
 
