@@ -3,7 +3,6 @@
 # Fud Dependencies
 DEPENDENCIES=(curlftpfs inotify-tools libnotify-bin sshfs unison)
 
-
 #Colors
 RED="\e[1;31m" #Red
 GREEN="\e[1;32m" #Green
