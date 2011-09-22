@@ -18,7 +18,7 @@ Enjoy!
 The latest version
 ------------------
 
-The latest version of Fud can be downloaded as a zip or tar from the project 
+The latest version of Fud can be downloaded as zip or tar from the project 
 page Fud:
 http://fudproject.dyndns.org
 It is also downloadable from our Git repository:
@@ -29,21 +29,21 @@ Both for the master branch and for other branches of development.
 Files
 -----
 
-- fud 			scripts for synchronization
-- fudconf 		user configuration script
-- fud.png 		icon
+- fud 				scripts for synchronization
+- fudconf 			user configuration script
+- fud.png 			icon
 - fud.sample-conf 	an example of configuration file
-- fud.svg 		icon in vector format
-- install 		root install script
-- LICENSE 		GPL V.3 license file
-- README 		this file in english language - just a readme file!
+- fud.svg 			icon in vector format
+- install 			root install script
+- LICENSE 			GPL V.3 license file
+- README 			this file in english language - just a readme file!
 - README_it-IT 		this file in italian language - just a readme file!
 
 
 How does Fud works?
 -------------------
 
-First of all, you need install Fud. Just run the installer script with root
+First of all, you need to install Fud. Just run the installer script with root
 privileges:
 $ su -c "./Fud/install"
 Or:
@@ -53,16 +53,23 @@ $ su
 
 To configure Fud, simply run fudconf:
 $ fudconf
-Fudconf will help you to configure Fud through interactive questions. For the
+Fudconf will help you configuring Fud through interactive questions. For the
 configuration, you can refer to the sample file fud.sample-conf.
 
-When Fud is finally configured, it's ready to run. During the
-configuration, will be asked if you want to launch Fud at startup;
-in any case, you can launch Fud from the terminal:
+When Fud is finally configured, is ready to run. During the configuration,
+will be asked you if you want to launch Fud at startup; in any case, you can
+launch Fud from the terminal:
 $ fud
 
 For more information, see the Fud Wiki page:
 https://github.com/mirkop88/Fud/wiki/Get,-install-and-run-Fud
+
+
+Authors
+-------
+
+Mirko Pagliai (mirko[dot]pagliai[at]gmail[dot]com)
+pmate (pmate[at]gnurant[dot]org) 
 
 
 Licensing
