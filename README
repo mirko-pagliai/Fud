@@ -38,6 +38,7 @@ Files
 - LICENSE 			GPL V.3 license file
 - README 			this file in english language - just a readme file!
 - README_it-IT 		this file in italian language - just a readme file!
+- uninstall 		root uninstall script
 
 
 How does Fud works?

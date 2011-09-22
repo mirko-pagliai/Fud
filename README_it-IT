@@ -28,15 +28,16 @@ Sia per il ramo master, sia per gli altri rami di sviluppo.
 File
 ----
 
-- fud			script di sincronizzazione
-- fudconf		script di configurazione utente
-- fud.png		icona di Fud
-- fud.svg		icona di Fud in formato vettoriale
+- fud				script di sincronizzazione
+- fudconf			script di configurazione utente
+- fud.png			icona di Fud
+- fud.svg			icona di Fud in formato vettoriale
 - fud.sample-conf	un esempio di file di configurazione
-- install 		script di installazione per l'utente root
-- LICENSE 		licenza GPL V.3
-- README 		questo file in lingua inglese - un file "readme"
+- install 			script di installazione per l'utente root
+- LICENSE 			licenza GPL V.3
+- README 			questo file in lingua inglese - un file "readme"
 - README_it_IT		questo file in lingua italiana - un file "readme"
+- uninstall 		script di disinstallazione per l'utente root
 
 
 Come funziona Fud?
