@@ -47,6 +47,11 @@ for (( i=0; i<${tLen=${#DEPENDENCIES[@]}}; i++ )); do
 		if [[ ! `rpm -q ${DEPENDENCIES[$i]}` ]]; then
 			PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
 		fi
+	# ArchLinux (with pacman)
+	elif which pacman &> /dev/null; then
+		if [[ ! `pacman -Qqe | grep "${DEPENDENCIES[$i]}"` ]]; then
+			PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
+		fi
 	# If it's impossible to determine if there are missing dependencies, mark all as missing
 	else
 		PKGSTOINSTALL=${DEPENDENCIES[*]}
@@ -71,6 +76,9 @@ if [ "$PKGSTOINSTALL" != "" ]; then
 		# Fedora and CentOS (with yum)
 		elif which yum &> /dev/null; then
 			yum install $PKGSTOINSTALL
+		# ArchLinux (with pacman)
+		elif which pacman &> /dev/null; then
+			pacman -Sy $PKGSTOINSTALL
 		# Else, if no package manager has been founded
 		else
 			# Set $NOPKGMANAGER
