@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Fud Dependencies
-DEPENDENCIES=(curlftpfs inotify-tools libnotify-bin nfs-common sshfs unison)
+DEPENDENCIES=(curlftpfs inotify-tools libnotify-bin nfs-common sshfs unison sudo)
 
 #Colors
 RED="\e[1;31m" #Red
@@ -96,6 +96,15 @@ if [ "$PKGSTOINSTALL" != "" ]; then
 		printScreen $YELLOW"WARNING:"$RESET": Some dependencies may be missing. So, please, install manually ${DEPENDENCIES[*]}."
 	fi
 fi
+
+# Set sudo permissions for group fuse
+# Users members of group fuse will be able to mount, umount and edit /etc/fstab
+# ;)
+if ! egrep -i "^fuse" /etc/group > /dev/null; then
+	addgroup fuse
+fi
+echo "Cmnd_Alias FUD = /bin/mount, /bin/umount, /usr/sbin/adduser, /usr/bin/tee, /bin/sed" >> /etc/sudoers
+echo "%fuse ALL=NOPASSWD:FUD" >> /etc/sudoers
 
 printScreen $GREEN"Success"$RESET": Fud has been properly installed."
 
