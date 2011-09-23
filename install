@@ -41,7 +41,16 @@ for (( i=0; i<${tLen=${#DEPENDENCIES[@]}}; i++ )); do
 		if [[ ! `dpkg -l | grep -w "ii  ${DEPENDENCIES[$i]} "` ]]; then
 			PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
 		fi
-	# NOTA DA RIMUOVERE: qui andrebbero aggiunti vari elif per ogni distro
+	# OpenSuse, Mandriva, Fedora, CentOs, ecc. (with rpm)
+	elif which rpm &> /dev/null; then
+		if [[ ! `rpm -q ${DEPENDENCIES[$i]}` ]]; then
+			PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
+		fi
+	# ArchLinux (with pacman)
+	elif which pacman &> /dev/null; then
+		if [[ ! `pacman -Qqe | grep "${DEPENDENCIES[$i]}"` ]]; then
+			PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
+		fi
 	# If it's impossible to determine if there are missing dependencies, mark all as missing
 	else
 		PKGSTOINSTALL=$PKGSTOINSTALL" "${DEPENDENCIES[$i]}
@@ -57,18 +66,30 @@ if [ "$PKGSTOINSTALL" != "" ]; then
 		# Debian, Ubuntu and derivatives (with apt-get)
 		if which apt-get &> /dev/null; then
 			apt-get install $PKGSTOINSTALL
-			# If installation is successful
-			if [ $? -eq 0 ] ; then
-					printScreen "All dependencies are satisfied."
-			# Else, if installation isn't successful		
-			else
-				printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
-				exit 1
-			fi
-		# NOTA DA RIMUOVERE: qui andrebbero aggiunti vari elif per ogni distro
+		# OpenSuse (with zypper)
+		elif which zypper &> /dev/null; then
+			zypper in $PKGSTOINSTALL
+		# Mandriva (with urpmi)
+		elif which urpmi &> /dev/null; then
+			urpmi $PKGSTOINSTALL
+		# Fedora and CentOS (with yum)
+		elif which yum &> /dev/null; then
+			yum install $PKGSTOINSTALL
+		# ArchLinux (with pacman)
+		elif which pacman &> /dev/null; then
+			pacman -Sy $PKGSTOINSTALL
+		# Else, if no package manager has been founded
 		else
-			printScreen $RED"ERROR:"$RESET": impossible to install missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
-			exit 1
+			# Set $NOPKGMANAGER
+			NOPKGMANAGER=TRUE
+			printScreen $RED"ERROR:"$RESET": impossible to found a package manager in your sistem. Please, install manually ${DEPENDENCIES[*]}."
+		fi
+		# Check if installation is successful
+		if [[ $? -eq 0 && ! -z $NOPKGMANAGER ]] ; then
+			printScreen "All dependencies are satisfied."
+		# Else, if installation isn't successful		
+		else
+			printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
 		fi
 	# Else, if user don't wanna install missing dependencies
 	else
