@@ -51,6 +51,24 @@ testStuff () {
 		printScreen $RED"Error: "$RESET"your user is not in the fuse group. Type \`addgroup $USER fuse\` as root first, then logout, login and restart this script.";
 		exit 1
 	fi	
+
+	# Only for ssh and ftp methods
+	if [[ $METHOD = "ssh" || $METHOD = "ftp" ]]; then
+		# Check if user is in the fuse group
+		if ! groups | grep "fuse" &> /dev/null; then
+			printScreen $RED"Error: "$RESET"your user is not in the fuse group. Type \`addgroup $USER fuse\` as root first, then logout, login and restart this script";
+			exit 1
+		fi	
+	fi
+	
+	# Only for ntf methods
+	if [[ $METHOD = "ntf" ]]; then
+		# Check if /etc/fstab is ok
+		if ! sed -n "/^$SERVER.*nfs\trw,users,noauto\t0\t0 #Fud mount/p" /etc/fstab &> /dev/null; then
+			printScreen $RED"Error: "$RESET"your /etc/fstab/ is not configured to use Fud with Nfs. Please, edit manually /etc/fstab, adding the following line at the end:\n$SERVER:$RPATH\t$MOUNTPOINT\tnfs\trw,users,noauto\t0\t0 #Fud mount";
+			exit 1
+		fi
+	fi
 }
 
 # Mount remote directory in $MOUNTPOINT
@@ -85,6 +103,14 @@ mountRemote() {
 				if ! curlftpfs -v $SERVER:$PORT/$RPATH $MOUNTPOINT -o user=$LOGIN:$PASSWORD -o allow_other -o nonempty; then
 					printScreen $RED"Error:"$RESET" impossible to login to ftp server. Check your server configuration and your internet connection first, then restart the script."
 					printScreen "Fud retry the connection in 30 seconds."
+					sleep 30
+				fi
+			# Check for nfs connection
+			elif [ "$METHOD" == "nfs" ]; then
+				# Try to mount the remote directory with curlftpfs and verify
+				if ! mount $MOUNTPOINT &> /dev/null; then
+					printScreen $RED"Error:"$RESET" impossible to mount the nfs server. Check your server configuration and your internet connection first, then restart the script"
+					printScreen "One more try in 30 seconds"
 					sleep 30
 				fi
 			fi
