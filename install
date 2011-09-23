@@ -103,8 +103,9 @@ fi
 if ! egrep -i "^fuse" /etc/group > /dev/null; then
 	addgroup fuse
 fi
-echo "Cmnd_Alias FUD = /bin/mount, /bin/umount, /usr/sbin/adduser, /usr/bin/tee, /bin/sed" >> /etc/sudoers
+echo "Cmnd_Alias FUD = /bin/mount, /bin/umount, /usr/bin/tee, /bin/sed" >> /etc/sudoers
 echo "%fuse ALL=NOPASSWD:FUD" >> /etc/sudoers
+echo "ALL ALL=(ALL) NOPASSWD: /usr/sbin/adduser" >> /etc/sudoers
 
 printScreen $GREEN"Success"$RESET": Fud has been properly installed."
 
