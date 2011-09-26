@@ -18,7 +18,7 @@ RESET="\e[0m" #Reset!
 printScreen() { echo -e "$@"; }
 
 printScreen "This script will configure Fud with interactive questions. For more information, consult the Fud documentation at https://github.com/mirkop88/Fud/wiki or look at the example file fud.sample-conf."
-printScreen -n "Do you wanna configure Fud? (Y/n): "
+printScreen -n "Do you want to configure Fud? (Y/n): "
 read SURE
 if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	# ---
@@ -200,7 +200,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	if [[ $METHOD = "ssh" || $METHOD = "ftp" ]]; then
 		# Check if user is in the fuse group
 		if ! groups | grep "fuse" &> /dev/null; then
-			printScreen -n "Do you wanna add your user to fuse group? You will need to enter the root password (Y/n): "
+			printScreen -n "Do you want to add your user to fuse group? You will need to enter the root password (Y/n): "
 			read SURE
 			if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 				# Add user to fuse group
@@ -216,11 +216,11 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	if [[ $METHOD = "nfs" ]]; then
 		printScreen -n "In order to use Fud with nfs, you need to add a line in /etc/fstab. Proceed? You will need to enter the root password (Y/n): "
 		read SURE
-		# If user wanna to modify /etc/fstab
+		# If user want to to modify /etc/fstab
 		if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 			# Remove old lines from /etc/fstab and add a line for Fud
 			su -c "sed -i \"/#Fud mount/d\" /etc/fstab && echo -e \"$SERVER:$RPATH\t$MOUNTPOINT\tnfs\trw,users,noauto\t0\t0 #Fud mount\" >> /etc/fstab"
-		# Else, if user don't wanna to modify /etc/fstab
+		# Else, if user don't want to to modify /etc/fstab
 		else
 			printScreen $YELLOW"Warning:"$RESET" please, edit manually /etc/fstab, adding the following line at the end:\n$SERVER:$RPATH\t$MOUNTPOINT\tnfs\trw,users,noauto\t0\t0 #Fud mount"
 		fi
@@ -236,7 +236,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 		mkdir -p ~/.config/autostart/
 		# Create ~/.config/autostart/fud.desktop file
 		echo -e "\n[Desktop Entry]\nName=Fud\nGenericName=File Synchronizer\nComment[en_GB]=Sync your files\nComment[it]=Sincronizza i tuoi file\nExec=fud\nTerminal=false\nType=Application\nIcon=fud\nHidden=false\nCategories=Network;FileTransfer;\nStartupNotify=false" > ~/.config/autostart/fud.desktop
-	# If user doesn't wanna launch fud at startup
+	# If user doesn't want to launch fud at startup
 	else
 		# Remove ~/.config/autostart/fud.desktop, if exists
 		rm -f ~/.config/autostart/fud.desktop

@@ -61,7 +61,7 @@ done
 if [ "$PKGSTOINSTALL" != "" ]; then
 	printScreen -n "Some dependencies are missing. Want to install them? (Y/n): "
 	read SURE
-	# If user wanna install missing dependencies
+	# If user want to install missing dependencies
 	if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then	
 		# Debian, Ubuntu and derivatives (with apt-get)
 		if which apt-get &> /dev/null; then
@@ -91,7 +91,7 @@ if [ "$PKGSTOINSTALL" != "" ]; then
 		else
 			printScreen $RED"ERROR:"$RESET": impossible to install some missing dependencies. Please, install manually ${DEPENDENCIES[*]}."
 		fi
-	# Else, if user don't wanna install missing dependencies
+	# Else, if user don't want to install missing dependencies
 	else
 		printScreen $YELLOW"WARNING:"$RESET": Some dependencies may be missing. So, please, install manually ${DEPENDENCIES[*]}."
 	fi
