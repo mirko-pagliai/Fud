@@ -3,6 +3,7 @@
 FUDDIR="$HOME/.fud"
 FUDCONF="$FUDDIR/fud.conf"
 MOUNTPOINT="$HOME/.fud/remotedir"
+CONFIGCONTENT=""
 
 METHODS[1]="ssh"
 METHODS[2]="ftp"
@@ -14,8 +15,12 @@ GREEN="\e[1;32m" #Green
 YELLOW="\e[1;33m" #Yellow
 RESET="\e[0m" #Reset!
 
+# Append (in a new line)a string to the configuration variable ($CONFIGCONTENT)
+appendToConfig() { CONFIGCONTENT="$CONFIGCONTENT\n$@"; }
 # Print on screen
 printScreen() { echo -e "$@"; }
+# Write the configuration variable ($CONFIGCONTENT) in $FUDCONF file
+writeConfig() {  echo -e $CONFIGCONTENT >> $FUDCONF; }
 
 printScreen "This script will configure Fud with interactive questions. For more information, consult the Fud documentation at https://github.com/mirkop88/Fud/wiki or look at the example file fud.sample-conf."
 printScreen -n "Do you want to configure Fud? (Y/n): "
@@ -40,7 +45,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 		mkdir -p $MOUNTPOINT &> /dev/null
 		printScreen "Created $MOUNTPOINT for mounting the remote directory."
 	fi
-	chmod -R 755 $MOUNTPOINT &> /dev/null
+	chmod -R 755 $MOUNTPOINT &> /dev/null	
 	
 	# ---
 	# CONNECTION METHOD
@@ -60,7 +65,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 			METHOD=${METHODS[$METHOD]}
 			printScreen "You have selected $METHOD method."
 			# Write method in the configuration file
-			echo "METHOD=\"$METHOD\"" > $FUDCONF
+			appendToConfig "METHOD=\"$METHOD\""
 			# Break loop
 			break
 		# If has not been selected a supported method
@@ -82,7 +87,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 		# If a server has been correctly entered
 		if [[ $SERVER != "" ]]; then
 			# Write server in the configuration file
-			echo "SERVER=\"$SERVER\"" >> $FUDCONF
+			appendToConfig "SERVER=\"$SERVER\""
 			# Break loop
 			break
 		# If a server has not been correctly entered
@@ -106,7 +111,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 			# If a user has been correctly entered
 			if [[ $LOGIN != "" ]]; then
 				# Write user in the configuration file
-				echo "LOGIN=\"$LOGIN\"" >> $FUDCONF
+				appendToConfig "LOGIN=\"$LOGIN\""
 				# Break loop
 				break
 			# If a user has not been correctly entered
@@ -128,7 +133,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 		printScreen -n "Password for connection: "
 		read PASSWORD
 		# Write password in the configuration file
-		echo "PASSWORD=\"$PASSWORD\"" >> $FUDCONF
+		appendToConfig "PASSWORD=\"$PASSWORD\""
 	fi
 		
 	# ---
@@ -152,7 +157,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 			PORT=$DPORT
 		fi
 		# Write port in the configuration file
-		echo "PORT=\"$PORT\"" >> $FUDCONF
+		appendToConfig "PORT=\"$PORT\""
 	fi
 
 	# ---
@@ -173,7 +178,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	# Set local directory permissions
 	chmod -R 755 $FUDDIR
 	# Write local directory in the configuration file
-	echo "LPATH=\"$LPATH\"" >> $FUDCONF
+	appendToConfig "LPATH=\"$LPATH\""
 
 	# ---
 	# REMOTE DIRECTORY FOR SYNCHRONIZATION
@@ -182,7 +187,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	printScreen -n "Remote directory for synchronization: "
 	read RPATH
 	# Write remote directory in the configuration file
-	echo "RPATH=\"$RPATH\"" >> $FUDCONF
+	appendToConfig "RPATH=\"$RPATH\""
 
 	# ---
 	# ADDITIONAL OPTIONS FOR UNISON
@@ -191,7 +196,7 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	printScreen -n "Additional options for Unison: "
 	read EXTRAOPTIONS
 	# Write additional options in the configuration file
-	echo "EXTRAOPTIONS=\"$EXTRAOPTIONS\"" >> $FUDCONF	
+	appendToConfig "EXTRAOPTIONS=\"$EXTRAOPTIONS\""	
 
 	# ---
 	# ADD TO FUSE GROUP
@@ -243,6 +248,9 @@ if [[ $SURE = "Y" || $SURE = "y" || $SURE = "" ]]; then
 	fi
 	printScreen
 
+	# At the end, write configuration
+	writeConfig
+	
 	# End
 	printScreen $GREEN"Success"$RESET": Fud has been properly configured and it's now ready for use. Good sync!"
 	printScreen "Note: if you just added your user to fuse group, you need to logout and login before using Fud."
